@@ -23,17 +23,14 @@ st.set_page_config(
 # ============ CUSTOM CSS - SPACE/GALAXY THEME ============
 st.markdown("""
 <style>
-    /* Import fonts */
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
     
-    /* Main background - Deep space with galaxy gradient */
     .stApp {
         background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 25%, #0d1b2a 50%, #1b0a2e 75%, #0a0a1a 100%);
         background-attachment: fixed;
         position: relative;
     }
     
-    /* Stars overlay */
     .stApp::before {
         content: '';
         position: fixed;
@@ -59,7 +56,6 @@ st.markdown("""
         z-index: 0;
     }
     
-    /* Nebula glow effects */
     .stApp::after {
         content: '';
         position: fixed;
@@ -75,7 +71,6 @@ st.markdown("""
         z-index: 0;
     }
     
-    /* Scanline effect */
     .scanline {
         position: fixed;
         top: 0;
@@ -93,7 +88,6 @@ st.markdown("""
         z-index: 9999;
     }
     
-    /* Header - Galaxy gradient */
     .main-header {
         font-family: 'Orbitron', sans-serif;
         font-size: 3.5rem;
@@ -125,7 +119,6 @@ st.markdown("""
         }
     }
     
-    /* Sub-header */
     .sub-header {
         font-family: 'Share Tech Mono', monospace;
         font-size: 1.1rem;
@@ -141,7 +134,6 @@ st.markdown("""
         z-index: 1;
     }
     
-    /* Cards - Glass morphism with galaxy border */
     .result-card {
         background: rgba(10, 10, 30, 0.7);
         backdrop-filter: blur(20px);
@@ -187,7 +179,6 @@ st.markdown("""
         border-color: rgba(123, 47, 252, 0.4);
     }
     
-    /* Card text */
     .result-card h4 {
         font-family: 'Orbitron', sans-serif;
         color: #7b9fff;
@@ -207,7 +198,6 @@ st.markdown("""
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
     }
     
-    /* Upload area - Galaxy pulse */
     .upload-area {
         border: 2px dashed rgba(123, 47, 252, 0.25);
         border-radius: 16px;
@@ -256,7 +246,6 @@ st.markdown("""
         opacity: 0.8;
     }
     
-    /* Button - Galaxy gradient */
     .stButton > button {
         font-family: 'Orbitron', sans-serif !important;
         background: linear-gradient(135deg, #7b2ffc, #00d4ff) !important;
@@ -283,7 +272,6 @@ st.markdown("""
             0 0 80px rgba(0, 212, 255, 0.2) !important;
     }
     
-    /* Sidebar - Dark glass */
     .css-1d391kg, .css-12oz5g7 {
         background: rgba(10, 10, 26, 0.85) !important;
         backdrop-filter: blur(15px) !important;
@@ -294,7 +282,6 @@ st.markdown("""
         color: #aab8d0 !important;
     }
     
-    /* Status dot - Galaxy style */
     .status-dot {
         display: inline-block;
         width: 10px;
@@ -314,7 +301,6 @@ st.markdown("""
         50% { opacity: 0.3; }
     }
     
-    /* Metrics - Galaxy style */
     .metric-box {
         background: rgba(123, 47, 252, 0.05);
         border: 1px solid rgba(123, 47, 252, 0.1);
@@ -347,7 +333,6 @@ st.markdown("""
         margin-top: 0.3rem;
     }
     
-    /* Error/Info messages - Galaxy style */
     .stAlert {
         background: rgba(255, 0, 100, 0.08) !important;
         border: 1px solid rgba(255, 0, 100, 0.2) !important;
@@ -372,7 +357,6 @@ st.markdown("""
         font-family: 'Share Tech Mono', monospace !important;
     }
     
-    /* Scrollbar - Galaxy style */
     ::-webkit-scrollbar {
         width: 6px;
         background: #0a0a1a;
@@ -386,7 +370,6 @@ st.markdown("""
         background: rgba(10, 10, 26, 0.5);
     }
     
-    /* Responsive */
     @media (max-width: 768px) {
         .main-header { font-size: 2rem; }
         .result-card { padding: 1rem; }
@@ -394,7 +377,6 @@ st.markdown("""
         .upload-area { padding: 1.5rem; }
     }
     
-    /* Footer */
     .footer-text {
         text-align: center;
         color: #334466;
@@ -408,7 +390,6 @@ st.markdown("""
     }
 </style>
 
-<!-- Scanline overlay -->
 <div class="scanline"></div>
 """, unsafe_allow_html=True)
 
