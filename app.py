@@ -1,6 +1,6 @@
 """
 IT-Insight: Hardware Analysis Tool
-Streamlit application with Space/Galaxy Theme UI
+Professional UI with SVG Logo
 """
 
 import streamlit as st
@@ -9,254 +9,169 @@ import os
 from dotenv import load_dotenv
 from utils.gemini_client import GeminiClient, GeminiError
 
-# Load environment variables
 load_dotenv()
 
-# Page configuration
 st.set_page_config(
     page_title="IT-Insight - Hardware Analyzer",
-    page_icon="🌌",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    page_icon="💻",
+    layout="wide"
 )
 
-# ============ CUSTOM CSS - SPACE/GALAXY THEME ============
+# ============ PROFESSIONAL CSS ============
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
     
     .stApp {
-        background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 25%, #0d1b2a 50%, #1b0a2e 75%, #0a0a1a 100%) !important;
-        background-attachment: fixed !important;
+        background: linear-gradient(145deg, #0b0f1a 0%, #141b2b 50%, #0f1422 100%);
     }
     
-    .stApp::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: 
-            radial-gradient(2px 2px at 20px 30px, #eee, transparent),
-            radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-            radial-gradient(1px 1px at 90px 40px, #fff, transparent),
-            radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
-            radial-gradient(2px 2px at 160px 30px, #ddd, transparent),
-            radial-gradient(1px 1px at 200px 60px, #fff, transparent),
-            radial-gradient(2px 2px at 250px 90px, rgba(255,255,255,0.7), transparent),
-            radial-gradient(1px 1px at 300px 20px, #eee, transparent);
-        background-size: 200px 200px;
-        background-repeat: repeat;
-        opacity: 0.4;
-        pointer-events: none;
-        z-index: 0;
-    }
-    
-    .main-header {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 3.5rem;
-        font-weight: 900;
-        text-align: center;
-        color: #00d4ff !important;
-        text-shadow: 0 0 30px rgba(0, 212, 255, 0.3), 0 0 60px rgba(123, 47, 252, 0.2);
+    /* Professional Header */
+    .header-container {
+        display: flex;
+        align-items: center;
         padding: 1rem 0;
-        letter-spacing: 4px;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .sub-header {
-        font-family: 'Share Tech Mono', monospace;
-        font-size: 1.1rem;
-        text-align: center;
-        color: #7b9fff !important;
-        letter-spacing: 6px;
-        border-bottom: 1px solid rgba(123, 47, 252, 0.2);
-        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
         margin-bottom: 2rem;
-        position: relative;
-        z-index: 1;
     }
     
+    .logo-text {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 2px;
+        margin-left: 1rem;
+    }
+    
+    .sub-text {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        color: #8899bb;
+        letter-spacing: 3px;
+        margin-left: 2rem;
+        padding-top: 0.3rem;
+    }
+    
+    /* Cards */
     .result-card {
-        background: rgba(10, 10, 30, 0.75) !important;
-        backdrop-filter: blur(20px) !important;
-        border: 1px solid rgba(123, 47, 252, 0.3) !important;
-        border-radius: 16px !important;
-        padding: 1.5rem !important;
-        margin: 1rem 0 !important;
-        box-shadow: 0 0 40px rgba(123, 47, 252, 0.1) !important;
-        transition: all 0.3s ease !important;
-        position: relative;
-        z-index: 1;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
     }
     
     .result-card:hover {
-        transform: translateY(-3px) !important;
-        box-shadow: 0 0 60px rgba(123, 47, 252, 0.2) !important;
-        border-color: rgba(123, 47, 252, 0.6) !important;
+        background: rgba(255,255,255,0.06);
+        border-color: rgba(0, 212, 255, 0.2);
+        transform: translateY(-2px);
     }
     
     .result-card h4 {
-        font-family: 'Orbitron', sans-serif;
-        color: #7b9fff !important;
-        font-size: 0.75rem;
-        letter-spacing: 2px;
+        color: #00d4ff;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.7rem;
         text-transform: uppercase;
+        letter-spacing: 2px;
+        opacity: 0.7;
         margin-bottom: 0.5rem;
     }
     
     .result-card .value {
-        font-family: 'Share Tech Mono', monospace;
-        color: #d0d8ff !important;
-        font-size: 1.1rem;
-        line-height: 1.6;
+        color: #e0e8f0;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 400;
     }
     
+    /* Upload Area */
     .upload-area {
-        border: 2px dashed rgba(123, 47, 252, 0.3) !important;
-        border-radius: 16px !important;
-        padding: 2rem !important;
-        text-align: center !important;
-        background: rgba(123, 47, 252, 0.05) !important;
-        transition: all 0.3s ease !important;
-        position: relative;
-        z-index: 1;
+        border: 2px dashed rgba(0, 212, 255, 0.2);
+        border-radius: 12px;
+        padding: 3rem;
+        text-align: center;
+        background: rgba(0, 212, 255, 0.02);
+        transition: all 0.3s ease;
     }
     
     .upload-area:hover {
-        border-color: #7b2ffc !important;
-        background: rgba(123, 47, 252, 0.1) !important;
-        box-shadow: 0 0 50px rgba(123, 47, 252, 0.1) !important;
+        border-color: #00d4ff;
+        background: rgba(0, 212, 255, 0.05);
     }
     
-    .upload-area .icon {
-        font-size: 3.5rem;
-        display: block;
-        margin-bottom: 0.5rem;
-        animation: float 3s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-    }
-    
-    .upload-area .title {
-        font-family: 'Orbitron', sans-serif;
-        color: #7b9fff !important;
-        font-size: 1.1rem;
-        letter-spacing: 2px;
-    }
-    
-    .upload-area .subtitle {
-        font-family: 'Share Tech Mono', monospace;
-        color: #6688aa !important;
-        font-size: 0.85rem;
-        margin-top: 0.3rem;
-    }
-    
+    /* Buttons */
     .stButton > button {
-        font-family: 'Orbitron', sans-serif !important;
-        background: linear-gradient(135deg, #7b2ffc, #00d4ff) !important;
-        color: #0a0a1a !important;
+        background: linear-gradient(135deg, #00d4ff, #7b2ffc) !important;
+        color: white !important;
         border: none !important;
-        border-radius: 12px !important;
-        padding: 0.8rem 2rem !important;
-        font-weight: 700 !important;
-        letter-spacing: 2px !important;
-        text-transform: uppercase !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 0 30px rgba(123, 47, 252, 0.2) !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 2rem !important;
+        font-weight: 600 !important;
+        font-family: 'Inter', sans-serif !important;
         width: 100% !important;
-        position: relative;
-        z-index: 1;
+        transition: all 0.3s ease !important;
     }
     
     .stButton > button:hover {
         transform: scale(1.02) !important;
-        box-shadow: 0 0 50px rgba(123, 47, 252, 0.4) !important;
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.3) !important;
     }
     
-    .css-1d391kg, .css-12oz5g7, [data-testid="stSidebar"] {
-        background: rgba(10, 10, 26, 0.9) !important;
-        backdrop-filter: blur(15px) !important;
-        border-right: 1px solid rgba(123, 47, 252, 0.1) !important;
-    }
-    
-    .status-dot {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin-right: 8px;
-        animation: blink 1.5s ease-in-out infinite;
-        background: #7b2ffc !important;
-        box-shadow: 0 0 20px #7b2ffc !important;
-    }
-    
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-    }
-    
-    .metric-box {
-        background: rgba(123, 47, 252, 0.08) !important;
-        border: 1px solid rgba(123, 47, 252, 0.15) !important;
-        border-radius: 12px !important;
-        padding: 1rem !important;
-        text-align: center !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .metric-box:hover {
-        border-color: rgba(123, 47, 252, 0.4) !important;
-        box-shadow: 0 0 30px rgba(123, 47, 252, 0.05) !important;
-    }
-    
-    .metric-box .number {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #7b9fff !important;
-        font-family: 'Orbitron', sans-serif;
-    }
-    
-    .metric-box .label {
-        font-size: 0.65rem;
-        color: #6688aa !important;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-top: 0.2rem;
-    }
-    
-    .footer-text {
-        text-align: center;
-        color: #334466 !important;
-        font-family: 'Share Tech Mono', monospace;
-        font-size: 0.7rem;
-        letter-spacing: 2px;
-        padding: 1rem 0;
-        opacity: 0.5;
-        position: relative;
-        z-index: 1;
-    }
-    
-    @media (max-width: 768px) {
-        .main-header { font-size: 2rem; }
-        .result-card { padding: 1rem !important; }
-        .result-card .value { font-size: 0.95rem; }
-        .upload-area { padding: 1.5rem !important; }
+    /* Sidebar */
+    .css-1d391kg, .css-12oz5g7 {
+        background: rgba(11, 15, 26, 0.9) !important;
+        border-right: 1px solid rgba(255,255,255,0.05) !important;
     }
 </style>
-
-<div style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(100,50,255,0.02) 3px,rgba(100,50,255,0.02) 4px);z-index:9999;"></div>
 """, unsafe_allow_html=True)
 
+# ============ HEADER WITH SVG LOGO ============
+st.markdown(
+    """
+    <div class="header-container">
+        <!-- SVG Logo -->
+        <svg width="48" height="48" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Shield base -->
+            <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" 
+                  fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.8"/>
+            
+            <!-- Inner glow -->
+            <path d="M50 18 L78 34 L78 66 L50 82 L22 66 L22 34 Z" 
+                  fill="none" stroke="#7b2ffc" stroke-width="1" opacity="0.4"/>
+            
+            <!-- Center chip -->
+            <rect x="42" y="40" width="16" height="20" rx="2" fill="#00d4ff" opacity="0.15"/>
+            <rect x="46" y="44" width="8" height="12" rx="1" fill="#00d4ff" opacity="0.6"/>
+            
+            <!-- I letter -->
+            <rect x="40" y="44" width="3" height="16" rx="1" fill="#00d4ff"/>
+            
+            <!-- T letter -->
+            <rect x="57" y="44" width="3" height="16" rx="1" fill="#00d4ff"/>
+            <rect x="53" y="44" width="11" height="3" rx="1" fill="#00d4ff"/>
+            
+            <!-- Animated pulse -->
+            <circle cx="50" cy="50" r="3" fill="#00d4ff" opacity="0.8">
+                <animate attributeName="r" values="2;5;2" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.8;0.2;0.8" dur="2s" repeatCount="indefinite"/>
+            </circle>
+        </svg>
+        
+        <span class="logo-text">IT-INSIGHT</span>
+        <span class="sub-text">// AI-POWERED ANALYSIS</span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 # ============ SESSION STATE ============
-def initialize_session_state():
-    if 'analysis_result' not in st.session_state:
-        st.session_state.analysis_result = None
+if 'analysis_result' not in st.session_state:
+    st.session_state.analysis_result = None
 
 # ============ API KEY ============
 def get_api_key():
@@ -272,117 +187,17 @@ def get_api_key():
     return None
 
 # ============ DISPLAY FUNCTIONS ============
-def display_header():
-    col1, col2 = st.columns([1, 6])
-    
-    with col1:
-        st.markdown(
-            """
-            <div style="text-align: center; padding-top: 0.2rem;">
-                <svg width="65" height="65" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Outer rings -->
-                    <circle cx="50" cy="50" r="48" stroke="#00d4ff" stroke-width="1.5" fill="none" opacity="0.25"/>
-                    <circle cx="50" cy="50" r="42" stroke="#7b2ffc" stroke-width="1" fill="none" opacity="0.3"/>
-                    
-                    <!-- Shield/Tech shape -->
-                    <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" 
-                          fill="none" stroke="#00d4ff" stroke-width="1.8" opacity="0.6"/>
-                    
-                    <!-- Animated center dot -->
-                    <circle cx="50" cy="50" r="4" fill="#00d4ff" opacity="0.9">
-                        <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/>
-                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
-                    </circle>
-                    
-                    <!-- I + T letters -->
-                    <rect x="42" y="38" width="3" height="24" rx="1" fill="#00d4ff"/>
-                    <rect x="55" y="38" width="3" height="24" rx="1" fill="#00d4ff"/>
-                    <rect x="42" y="38" width="16" height="3" rx="1" fill="#00d4ff"/>
-                    
-                    <!-- Accent dots -->
-                    <circle cx="25" cy="25" r="1.5" fill="#7b2ffc" opacity="0.5"/>
-                    <circle cx="75" cy="25" r="1.5" fill="#7b2ffc" opacity="0.5"/>
-                    <circle cx="25" cy="75" r="1.5" fill="#7b2ffc" opacity="0.5"/>
-                    <circle cx="75" cy="75" r="1.5" fill="#7b2ffc" opacity="0.5"/>
-                </svg>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-    
-    with col2:
-        st.markdown(
-            """
-            <div>
-                <p style="font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900; color: #00d4ff !important; margin-bottom: 0; text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);">
-                    IT-INSIGHT
-                </p>
-                <p style="font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; color: #7b9fff !important; margin-top: -0.5rem; border-bottom: none;">
-                    // AI-POWERED HARDWARE ANALYSIS //
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-    
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.markdown(
-            """
-            <div style="text-align: center; margin-top: 0.5rem; margin-bottom: 1rem;">
-                <span class="status-dot"></span>
-                <span style="font-family:'Share Tech Mono',monospace;color:#7b9fff;font-size:0.8rem;opacity:0.7;">
-                    SYSTEM ONLINE // v2.0
-                </span>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-def display_metrics():
-    col1, col2, col3, col4 = st.columns(4)
-    metrics = [
-        ("🌌", "STATUS", "ACTIVE"),
-        ("💫", "CONNECTION", "SECURE"),
-        ("🛸", "MODEL", "GEMINI 2.0"),
-        ("🔮", "ENCRYPTION", "AES-256")
-    ]
-    
-    for col, (icon, label, value) in zip([col1, col2, col3, col4], metrics):
-        with col:
-            st.markdown(
-                f"""
-                <div class="metric-box">
-                    <div style="font-size:1.5rem;">{icon}</div>
-                    <div class="number" style="font-size:0.9rem;color:#7bb8ff;">{value}</div>
-                    <div class="label">{label}</div>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
 def display_result(result):
     st.markdown("---")
-    st.markdown(
-        """
-        <div style="text-align:center;font-family:'Orbitron',sans-serif;color:#7b9fff;letter-spacing:4px;font-size:1.2rem;margin:2rem 0;">
-            ═══ ANALYSIS REPORT ═══
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-    
-    features = result.get('Key Features', ['N/A'])
-    if isinstance(features, str):
-        features = [features]
+    st.markdown("### 📊 Analysis Report")
     
     col1, col2 = st.columns(2)
     
     items = [
-        ("🆔", "HARDWARE NAME", result.get('Hardware Name', 'N/A')),
-        ("⚡", "PRIMARY FUNCTION", result.get('Primary Function', 'N/A')),
-        ("🔗", "COMPATIBILITY", result.get('Compatibility', 'N/A')),
-        ("💡", "RECOMMENDATIONS", result.get('Recommendations', 'N/A'))
+        ("🆔", "Hardware Name", result.get('Hardware Name', 'N/A')),
+        ("⚡", "Primary Function", result.get('Primary Function', 'N/A')),
+        ("🔗", "Compatibility", result.get('Compatibility', 'N/A')),
+        ("💡", "Recommendations", result.get('Recommendations', 'N/A'))
     ]
     
     for i, (icon, label, value) in enumerate(items):
@@ -397,10 +212,14 @@ def display_result(result):
                 unsafe_allow_html=True
             )
     
+    features = result.get('Key Features', ['N/A'])
+    if isinstance(features, str):
+        features = [features]
+    
     st.markdown(
         f"""
         <div class="result-card">
-            <h4>✨ KEY FEATURES</h4>
+            <h4>✨ Key Features</h4>
             <div class="value">
                 {"<br>• ".join([''] + features) if features else 'N/A'}
             </div>
@@ -411,47 +230,31 @@ def display_result(result):
 
 # ============ MAIN APP ============
 def main():
-    initialize_session_state()
+    api_key = get_api_key()
     
-    display_header()
+    if not api_key:
+        st.error("""
+        ❌ **API KEY MISSING**
+        
+        Please set your Gemini API key in `.env` or Streamlit secrets.
+        """)
+        st.stop()
     
+    # Sidebar
     with st.sidebar:
-        st.markdown(
-            """
-            <div style="text-align:center;margin-bottom:2rem;">
-                <div style="font-size:2rem;">🪐</div>
-                <div style="font-family:'Orbitron',sans-serif;color:#7b9fff;font-size:0.8rem;letter-spacing:2px;">
-                    SYSTEM CONSOLE
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-        
-        st.markdown("### ⚙️ CONFIGURATION")
+        st.markdown("### ⚙️ Configuration")
         st.markdown("---")
         
-        st.markdown(
-            """
-            **OPERATIONS**
-            • Upload hardware image
-            • Initiate AI analysis
-            • View diagnostic report
-            """,
-            unsafe_allow_html=True
-        )
+        st.markdown("**Operations**")
+        st.markdown("- Upload hardware image")
+        st.markdown("- Initiate AI analysis")
+        st.markdown("- View diagnostic report")
         
         st.markdown("---")
-        st.markdown(
-            """
-            **SUPPORTED FORMATS**
-            • PNG • JPG • JPEG
-            • WEBP • BMP
-            """,
-            unsafe_allow_html=True
-        )
+        st.markdown("**Supported Formats**")
+        st.markdown("- PNG, JPG, JPEG, WEBP, BMP")
         
-        with st.expander("🛠️ ADVANCED"):
+        with st.expander("🛠️ Advanced"):
             temperature = st.slider(
                 "Temperature",
                 min_value=0.0,
@@ -466,34 +269,18 @@ def main():
                 value=300,
                 step=50
             )
-        
-        st.markdown("---")
-        st.markdown(
-            """
-            <div style="text-align:center;font-size:0.7rem;color:#445577;font-family:'Share Tech Mono',monospace;">
-                IT-INSIGHT v2.0<br>
-                SECURE CONNECTION
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
     
-    api_key = get_api_key()
-    
-    if not api_key:
-        st.error("""
-        ❌ **API KEY MISSING**
-        
-        Please set your Gemini API key in `.env` or Streamlit secrets.
-        """)
-        st.stop()
-    
+    # Upload Area
     st.markdown(
         """
         <div class="upload-area">
-            <span class="icon">🪐</span>
-            <div class="title">UPLOAD HARDWARE IMAGE</div>
-            <div class="subtitle">Drag & drop or click to select</div>
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🖥️</div>
+            <div style="font-family: 'Inter', sans-serif; color: #00d4ff; font-size: 1.2rem; font-weight: 600;">
+                Upload Hardware Image
+            </div>
+            <div style="font-family: 'Inter', sans-serif; color: #667799; font-size: 0.9rem; margin-top: 0.3rem;">
+                Drag & drop or click to select
+            </div>
         </div>
         """,
         unsafe_allow_html=True
@@ -509,25 +296,21 @@ def main():
         col1, col2 = st.columns([1, 1])
         with col1:
             image = Image.open(uploaded_file)
-            st.image(image, caption="UPLOADED IMAGE", use_container_width=True)
+            st.image(image, caption="Uploaded Image", use_container_width=True)
         
         with col2:
             st.markdown(
-                """
-                <div style="font-family:'Share Tech Mono',monospace;color:#6688aa;font-size:0.9rem;padding:1rem 0;">
-                    FILE: <span style="color:#7b9fff;">{}</span><br>
-                    SIZE: <span style="color:#7b9fff;">{} x {}</span>
+                f"""
+                <div style="font-family: 'Inter', sans-serif; color: #8899bb; font-size: 0.9rem; padding: 1rem 0;">
+                    <strong>FILE:</strong> <span style="color: #00d4ff;">{uploaded_file.name}</span><br>
+                    <strong>SIZE:</strong> <span style="color: #00d4ff;">{image.width} x {image.height}</span>
                 </div>
-                """.format(
-                    uploaded_file.name,
-                    image.width,
-                    image.height
-                ),
+                """,
                 unsafe_allow_html=True
             )
             
-            if st.button("🔍 ANALYZE HARDWARE", type="primary"):
-                with st.spinner("🧠 PROCESSING..."):
+            if st.button("🔍 Analyze Hardware", type="primary"):
+                with st.spinner("Processing with Gemini AI..."):
                     try:
                         client = GeminiClient(api_key)
                         result = client.analyze_hardware(
@@ -538,24 +321,23 @@ def main():
                         st.session_state.analysis_result = result
                         
                     except GeminiError as e:
-                        st.error(f"❌ ANALYSIS FAILED: {str(e)}")
+                        st.error(f"❌ Analysis failed: {str(e)}")
                     except Exception as e:
-                        st.error(f"❌ SYSTEM ERROR: {str(e)}")
+                        st.error(f"❌ System error: {str(e)}")
         
         if st.session_state.analysis_result:
             display_result(st.session_state.analysis_result)
             
-            st.markdown("---")
             col1, col2, col3 = st.columns([1, 1, 1])
             with col2:
-                if st.button("📋 EXPORT REPORT"):
+                if st.button("📋 Export Report"):
                     st.info("Report ready for export")
                     st.balloons()
     else:
         st.info("⏳ Awaiting hardware image upload...")
         st.markdown(
             """
-            <div style="text-align:center;color:#445577;font-family:'Share Tech Mono',monospace;font-size:0.8rem;padding:2rem;">
+            <div style="text-align: center; color: #445577; font-family: 'Inter', sans-serif; font-size: 0.8rem; padding: 2rem;">
                 SUPPORTED HARDWARE: CPU • GPU • RAM • STORAGE • NETWORK • PERIPHERALS
             </div>
             """,
@@ -565,8 +347,8 @@ def main():
     st.markdown("---")
     st.markdown(
         """
-        <div class="footer-text">
-            🌌 IT-INSIGHT • POWERED BY GOOGLE GEMINI API • SECURE & ENCRYPTED 🌌
+        <div style="text-align: center; color: #334466; font-family: 'Inter', sans-serif; font-size: 0.7rem; letter-spacing: 2px; padding: 1rem 0; opacity: 0.5;">
+            ⚡ IT-INSIGHT • Powered by Google Gemini API • Secure & Encrypted
         </div>
         """,
         unsafe_allow_html=True
@@ -574,4 +356,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
