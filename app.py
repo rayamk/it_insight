@@ -32,9 +32,15 @@ if 'uploaded_images' not in st.session_state:
 if 'selected_image' not in st.session_state:
     st.session_state.selected_image = None
 
-# ============ TOGGLE THEME ============
+if 'sidebar_open' not in st.session_state:
+    st.session_state.sidebar_open = True
+
+# ============ TOGGLE FUNCTIONS ============
 def toggle_theme():
     st.session_state.dark_mode = not st.session_state.dark_mode
+
+def toggle_sidebar():
+    st.session_state.sidebar_open = not st.session_state.sidebar_open
 
 # ============ THEME COLORS ============
 def get_theme():
@@ -233,7 +239,14 @@ def main():
     
     display_header()
     
+    # ===== SIDEBAR =====
     with st.sidebar:
+        if st.button("☰ " + ("Hide Sidebar" if st.session_state.sidebar_open else "Show Sidebar"), 
+                     use_container_width=True):
+            toggle_sidebar()
+            st.rerun()
+        
+        st.markdown("---")
         st.markdown("### ⚙️ Settings")
         st.markdown("---")
         
@@ -277,6 +290,7 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
+    # ===== MAIN CONTENT =====
     api_key = get_api_key()
     
     if not api_key:
