@@ -1,6 +1,6 @@
 """
 IT-Insight: Professional Hardware Analysis Tool
-With Light/Dark Mode Support
+With Multi-Image Upload & Gallery Preview
 """
 
 import streamlit as st
@@ -24,6 +24,12 @@ if 'dark_mode' not in st.session_state:
 
 if 'analysis_result' not in st.session_state:
     st.session_state.analysis_result = None
+
+if 'uploaded_images' not in st.session_state:
+    st.session_state.uploaded_images = []
+
+if 'selected_image' not in st.session_state:
+    st.session_state.selected_image = None
 
 # ============ TOGGLE THEME ============
 def toggle_theme():
@@ -51,6 +57,10 @@ def get_theme():
             "info_text": "#445566",
             "status_bg": "rgba(255,255,255,0.03)",
             "status_border": "rgba(255,255,255,0.05)",
+            "delete_bg": "rgba(255, 50, 50, 0.15)",
+            "delete_hover": "rgba(255, 50, 50, 0.25)",
+            "add_bg": "rgba(0, 180, 255, 0.1)",
+            "add_hover": "rgba(0, 180, 255, 0.2)",
         }
     else:
         return {
@@ -72,6 +82,10 @@ def get_theme():
             "info_text": "#8899aa",
             "status_bg": "rgba(0,0,0,0.03)",
             "status_border": "rgba(0,0,0,0.06)",
+            "delete_bg": "rgba(255, 50, 50, 0.1)",
+            "delete_hover": "rgba(255, 50, 50, 0.2)",
+            "add_bg": "rgba(0, 180, 255, 0.08)",
+            "add_hover": "rgba(0, 180, 255, 0.15)",
         }
 
 # ============ CUSTOM CSS ============
@@ -96,7 +110,7 @@ def inject_css():
             justify-content: space-between;
             padding: 1.5rem 0;
             border-bottom: 1px solid {theme["header_border"]};
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }}
         
         .header-left {{
@@ -126,9 +140,7 @@ def inject_css():
             letter-spacing: -0.5px;
         }}
         
-        .logo-text span {{
-            color: #00b4ff;
-        }}
+        .logo-text span {{ color: #00b4ff; }}
         
         .header-right {{
             display: flex;
@@ -156,11 +168,107 @@ def inject_css():
             50% {{ opacity: 0.3; }}
         }}
         
+        .gallery-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }}
+        
+        .gallery-item {{
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid {theme["border"]};
+            transition: all 0.3s ease;
+            aspect-ratio: 1 / 1;
+            background: {theme["bg2"]};
+            cursor: pointer;
+        }}
+        
+        .gallery-item:hover {{
+            border-color: #00b4ff;
+            transform: scale(1.02);
+        }}
+        
+        .gallery-item.selected {{
+            border-color: #00b4ff;
+            box-shadow: 0 0 20px rgba(0, 180, 255, 0.2);
+        }}
+        
+        .gallery-item img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }}
+        
+        .gallery-item .delete-btn {{
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: {theme["delete_bg"]};
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff4444;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }}
+        
+        .gallery-item .delete-btn:hover {{
+            background: {theme["delete_hover"]};
+            transform: scale(1.1);
+        }}
+        
+        .gallery-item .index-badge {{
+            position: absolute;
+            bottom: 6px;
+            left: 6px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }}
+        
+        .add-btn-container {{
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }}
+        
+        .add-btn {{
+            background: {theme["add_bg"]};
+            border: 2px dashed {theme["border"]};
+            border-radius: 12px;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: {theme["text"]};
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }}
+        
+        .add-btn:hover {{
+            background: {theme["add_hover"]};
+            border-color: #00b4ff;
+        }}
+        
         .upload-card {{
             background: {theme["upload_bg"]};
             border: 2px dashed {theme["upload_border"]};
             border-radius: 16px;
-            padding: 3.5rem 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
@@ -171,30 +279,9 @@ def inject_css():
             background: {theme["upload_hover"]};
         }}
         
-        .upload-icon {{
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            opacity: 0.6;
-        }}
-        
-        .upload-title {{
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: {theme["text"]};
-            margin-bottom: 0.3rem;
-        }}
-        
-        .upload-subtitle {{
-            font-size: 0.9rem;
-            color: {theme["text2"]};
-        }}
-        
-        .result-grid {{
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }}
+        .upload-icon {{ font-size: 3.5rem; margin-bottom: 1rem; opacity: 0.6; }}
+        .upload-title {{ font-size: 1.2rem; font-weight: 600; color: {theme["text"]}; margin-bottom: 0.3rem; }}
+        .upload-subtitle {{ font-size: 0.9rem; color: {theme["text2"]}; }}
         
         .result-card {{
             background: {theme["bg2"]};
@@ -219,12 +306,7 @@ def inject_css():
             margin-bottom: 0.5rem;
         }}
         
-        .result-value {{
-            font-size: 1rem;
-            font-weight: 400;
-            color: {theme["text"]};
-            line-height: 1.6;
-        }}
+        .result-value {{ font-size: 1rem; font-weight: 400; color: {theme["text"]}; line-height: 1.6; }}
         
         .stButton > button {{
             background: linear-gradient(135deg, #00b4ff, #7b2ffc) !important;
@@ -248,9 +330,7 @@ def inject_css():
             border-right: 1px solid {theme["border"]} !important;
         }}
         
-        [data-testid="stSidebar"] .stMarkdown {{
-            color: {theme["text"]} !important;
-        }}
+        [data-testid="stSidebar"] .stMarkdown {{ color: {theme["text"]} !important; }}
         
         .metric-grid {{
             display: grid;
@@ -267,19 +347,8 @@ def inject_css():
             text-align: center;
         }}
         
-        .metric-value {{
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #00b4ff;
-        }}
-        
-        .metric-label {{
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: {theme["text2"]};
-            margin-top: 0.2rem;
-        }}
+        .metric-value {{ font-size: 1.3rem; font-weight: 700; color: #00b4ff; }}
+        .metric-label {{ font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: {theme["text2"]}; margin-top: 0.2rem; }}
         
         .footer {{
             text-align: center;
@@ -291,29 +360,13 @@ def inject_css():
             letter-spacing: 0.5px;
         }}
         
-        .info-text {{
-            text-align: center;
-            color: {theme["info_text"]};
-            font-size: 0.8rem;
-            padding: 1.5rem 0;
-        }}
+        .info-text {{ text-align: center; color: {theme["info_text"]}; font-size: 0.8rem; padding: 1.5rem 0; }}
         
         @media (max-width: 768px) {{
-            .result-grid {{
-                grid-template-columns: 1fr;
-            }}
-            .metric-grid {{
-                grid-template-columns: 1fr 1fr;
-            }}
-            .header {{
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.8rem;
-            }}
-            .header-right {{
-                font-size: 0.7rem;
-                padding: 0.3rem 0.8rem;
-            }}
+            .gallery-grid {{ grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }}
+            .metric-grid {{ grid-template-columns: 1fr 1fr; }}
+            .header {{ flex-direction: column; align-items: flex-start; gap: 0.8rem; }}
+            .header-right {{ font-size: 0.7rem; padding: 0.3rem 0.8rem; }}
         }}
     </style>
     """, unsafe_allow_html=True)
@@ -371,6 +424,7 @@ def display_metrics():
             )
 
 def display_result(result):
+    theme = get_theme()
     st.markdown("---")
     st.markdown(
         """
@@ -429,8 +483,6 @@ def main():
         st.markdown("### ⚙️ Settings")
         st.markdown("---")
         
-        # Theme Toggle
-        st.markdown("**Theme**")
         icon = "🌙" if st.session_state.dark_mode else "☀️"
         label = "Dark Mode" if st.session_state.dark_mode else "Light Mode"
         if st.button(f"{icon} {label}", use_container_width=True):
@@ -438,11 +490,10 @@ def main():
             st.rerun()
         
         st.markdown("---")
-        
         st.markdown("**Operations**")
-        st.markdown("- Upload hardware image")
-        st.markdown("- AI-powered analysis")
-        st.markdown("- Export report")
+        st.markdown("- Upload images")
+        st.markdown("- Click image to select")
+        st.markdown("- Delete with ❌")
         
         st.markdown("---")
         st.markdown("**Supported Formats**")
@@ -484,75 +535,83 @@ def main():
     
     display_metrics()
     
+    # ===== UPLOAD AREA =====
     st.markdown(
         """
         <div class="upload-card">
             <div class="upload-icon">🖥️</div>
-            <div class="upload-title">Upload Hardware Image</div>
-            <div class="upload-subtitle">Drag & drop or click to select</div>
+            <div class="upload-title">Upload Hardware Images</div>
+            <div class="upload-subtitle">Click to select multiple images • Drag & drop supported</div>
         </div>
         """,
         unsafe_allow_html=True
     )
     
-    uploaded_file = st.file_uploader(
+    uploaded_files = st.file_uploader(
         " ",
         type=['png', 'jpg', 'jpeg', 'webp', 'bmp'],
+        accept_multiple_files=True,
         label_visibility="collapsed"
     )
     
-    if uploaded_file is not None:
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            image = Image.open(uploaded_file)
-            st.image(image, caption="Uploaded Image", use_container_width=True)
-        
-        with col2:
-            st.markdown(
-                f"""
-                <div style="font-family: 'Inter', sans-serif; color: {theme['text2']}; font-size: 0.9rem; padding: 1rem 0;">
-                    <strong>FILE:</strong> <span style="color: #00b4ff;">{uploaded_file.name}</span><br>
-                    <strong>SIZE:</strong> <span style="color: #00b4ff;">{image.width} x {image.height}</span>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-            
-            if st.button("🔍 Analyze Hardware"):
-                with st.spinner("Processing with Gemini AI..."):
-                    try:
-                        client = GeminiClient(api_key)
-                        result = client.analyze_hardware(
-                            image,
-                            temperature=temperature,
-                            max_tokens=max_tokens
-                        )
-                        st.session_state.analysis_result = result
-                    except Exception as e:
-                        st.error(f"❌ Error: {str(e)}")
-        
-        if st.session_state.analysis_result:
-            display_result(st.session_state.analysis_result)
-    else:
-        st.info("💡 Upload a hardware image to begin analysis")
+    if uploaded_files:
+        for file in uploaded_files:
+            image = Image.open(file)
+            st.session_state.uploaded_images.append({
+                "name": file.name,
+                "image": image,
+                "file": file
+            })
+        st.rerun()
+    
+    # ===== GALLERY =====
+    if st.session_state.uploaded_images:
         st.markdown(
             f"""
-            <div class="info-text">
-                Supported: CPU • GPU • RAM • Storage • Network • Peripherals
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0 0.5rem 0;">
+                <span style="font-size: 0.9rem; font-weight: 600; color: {theme['text']};">
+                    📸 Uploaded Images ({len(st.session_state.uploaded_images)})
+                </span>
             </div>
             """,
             unsafe_allow_html=True
         )
-    
-    st.markdown(
-        f"""
-        <div class="footer">
-            IT-Insight • Powered by Google Gemini API • Secure & Encrypted
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-if __name__ == "__main__":
-    main()
-
+        
+        cols = st.columns(4)
+        for idx, img_data in enumerate(st.session_state.uploaded_images):
+            col = cols[idx % 4]
+            with col:
+                st.image(img_data["image"], use_container_width=True)
+                st.caption(f"📷 {img_data['name'][:15]}...")
+                
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    if st.button("❌", key=f"del_{idx}", help="Delete image"):
+                        st.session_state.uploaded_images.pop(idx)
+                        if st.session_state.selected_image == idx:
+                            st.session_state.selected_image = None
+                        st.rerun()
+                with col2:
+                    if st.button("🔍", key=f"sel_{idx}", help="Select for analysis"):
+                        st.session_state.selected_image = idx
+                        st.rerun()
+                with col3:
+                    if st.button("📊", key=f"ana_{idx}", help="Analyze this image"):
+                        st.session_state.selected_image = idx
+                        st.session_state.analysis_result = None
+                        st.rerun()
+        
+        if st.session_state.selected_image is not None:
+            idx = st.session_state.selected_image
+            if idx < len(st.session_state.uploaded_images):
+                img_data = st.session_state.uploaded_images[idx]
+                st.markdown("---")
+                st.markdown(f"""
+                    <div style="font-size: 1rem; font-weight: 600; color: {theme['text']};">
+                        🔍 Analyzing: {img_data['name']}
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                col1, col2 = st.columns([1, 1])
+                with col1:
+             
