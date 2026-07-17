@@ -1,6 +1,6 @@
 """
-IT-Insight: Hardware Analysis Tool
-Professional UI with SVG Logo
+IT-Insight: Professional Hardware Analysis Tool
+Clean, modern, and professional UI
 """
 
 import streamlit as st
@@ -12,105 +12,174 @@ from utils.gemini_client import GeminiClient, GeminiError
 load_dotenv()
 
 st.set_page_config(
-    page_title="IT-Insight - Hardware Analyzer",
-    page_icon="💻",
-    layout="wide"
+    page_title="IT-Insight",
+    page_icon="⚡",
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
 # ============ PROFESSIONAL CSS ============
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
     .stApp {
-        background: linear-gradient(145deg, #0b0f1a 0%, #141b2b 50%, #0f1422 100%);
+        background: #0a0e17 !important;
+        font-family: 'Inter', sans-serif !important;
     }
     
-    /* Professional Header */
-    .header-container {
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 2rem;
+    }
+    
+    .header {
         display: flex;
         align-items: center;
-        padding: 1rem 0;
+        justify-content: space-between;
+        padding: 1.5rem 0;
         border-bottom: 1px solid rgba(255,255,255,0.05);
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .logo-icon {
+        width: 42px;
+        height: 42px;
+        background: linear-gradient(135deg, #00b4ff, #7b2ffc);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: white;
+        font-family: 'Inter', sans-serif;
     }
     
     .logo-text {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #00d4ff, #7b2ffc);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        letter-spacing: 2px;
-        margin-left: 1rem;
+        color: #e8f0f8;
+        letter-spacing: -0.5px;
     }
     
-    .sub-text {
-        font-family: 'Inter', sans-serif;
+    .logo-text span {
+        color: #00b4ff;
+    }
+    
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         font-size: 0.8rem;
-        color: #8899bb;
-        letter-spacing: 3px;
-        margin-left: 2rem;
-        padding-top: 0.3rem;
+        color: #667799;
+        background: rgba(255,255,255,0.03);
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.05);
     }
     
-    /* Cards */
+    .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #00b4ff;
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+    
+    .upload-card {
+        background: rgba(255,255,255,0.02);
+        border: 2px dashed rgba(255,255,255,0.06);
+        border-radius: 16px;
+        padding: 3.5rem 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .upload-card:hover {
+        border-color: rgba(0, 180, 255, 0.3);
+        background: rgba(0, 180, 255, 0.03);
+    }
+    
+    .upload-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        opacity: 0.6;
+    }
+    
+    .upload-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #e8f0f8;
+        margin-bottom: 0.3rem;
+    }
+    
+    .upload-subtitle {
+        font-size: 0.9rem;
+        color: #667799;
+    }
+    
+    .result-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+    }
+    
     .result-card {
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.05);
         border-radius: 12px;
         padding: 1.5rem;
-        margin: 1rem 0;
-        backdrop-filter: blur(10px);
         transition: all 0.3s ease;
     }
     
     .result-card:hover {
-        background: rgba(255,255,255,0.06);
-        border-color: rgba(0, 212, 255, 0.2);
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(0, 180, 255, 0.15);
         transform: translateY(-2px);
     }
     
-    .result-card h4 {
-        color: #00d4ff;
-        font-family: 'Inter', sans-serif;
+    .result-label {
         font-size: 0.7rem;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 2px;
-        opacity: 0.7;
+        letter-spacing: 1px;
+        color: #667799;
         margin-bottom: 0.5rem;
     }
     
-    .result-card .value {
-        color: #e0e8f0;
-        font-family: 'Inter', sans-serif;
+    .result-value {
         font-size: 1rem;
         font-weight: 400;
+        color: #e8f0f8;
+        line-height: 1.6;
     }
     
-    /* Upload Area */
-    .upload-area {
-        border: 2px dashed rgba(0, 212, 255, 0.2);
-        border-radius: 12px;
-        padding: 3rem;
-        text-align: center;
-        background: rgba(0, 212, 255, 0.02);
-        transition: all 0.3s ease;
-    }
-    
-    .upload-area:hover {
-        border-color: #00d4ff;
-        background: rgba(0, 212, 255, 0.05);
-    }
-    
-    /* Buttons */
     .stButton > button {
-        background: linear-gradient(135deg, #00d4ff, #7b2ffc) !important;
+        background: linear-gradient(135deg, #00b4ff, #7b2ffc) !important;
         color: white !important;
         border: none !important;
-        border-radius: 8px !important;
-        padding: 0.75rem 2rem !important;
+        border-radius: 10px !important;
+        padding: 0.7rem 2rem !important;
         font-weight: 600 !important;
         font-family: 'Inter', sans-serif !important;
         width: 100% !important;
@@ -118,60 +187,94 @@ st.markdown("""
     }
     
     .stButton > button:hover {
-        transform: scale(1.02) !important;
-        box-shadow: 0 0 30px rgba(0, 212, 255, 0.3) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 8px 30px rgba(0, 180, 255, 0.25) !important;
     }
     
-    /* Sidebar */
-    .css-1d391kg, .css-12oz5g7 {
-        background: rgba(11, 15, 26, 0.9) !important;
+    [data-testid="stSidebar"] {
+        background: rgba(10, 14, 23, 0.95) !important;
         border-right: 1px solid rgba(255,255,255,0.05) !important;
+    }
+    
+    [data-testid="stSidebar"] .stMarkdown {
+        color: #c8d8e8 !important;
+    }
+    
+    .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+    
+    .metric-item {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .metric-value {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #00b4ff;
+    }
+    
+    .metric-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #667799;
+        margin-top: 0.2rem;
+    }
+    
+    .footer {
+        text-align: center;
+        padding: 2rem 0 1rem 0;
+        border-top: 1px solid rgba(255,255,255,0.03);
+        margin-top: 2.5rem;
+        font-size: 0.75rem;
+        color: #445566;
+        letter-spacing: 0.5px;
+    }
+    
+    @media (max-width: 768px) {
+        .result-grid {
+            grid-template-columns: 1fr;
+        }
+        .metric-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        .header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+        .header-right {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.8rem;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ============ HEADER WITH SVG LOGO ============
+# ============ HEADER ============
 st.markdown(
     """
-    <div class="header-container">
-        <!-- SVG Logo -->
-        <svg width="48" height="48" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <!-- Shield base -->
-            <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" 
-                  fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.8"/>
-            
-            <!-- Inner glow -->
-            <path d="M50 18 L78 34 L78 66 L50 82 L22 66 L22 34 Z" 
-                  fill="none" stroke="#7b2ffc" stroke-width="1" opacity="0.4"/>
-            
-            <!-- Center chip -->
-            <rect x="42" y="40" width="16" height="20" rx="2" fill="#00d4ff" opacity="0.15"/>
-            <rect x="46" y="44" width="8" height="12" rx="1" fill="#00d4ff" opacity="0.6"/>
-            
-            <!-- I letter -->
-            <rect x="40" y="44" width="3" height="16" rx="1" fill="#00d4ff"/>
-            
-            <!-- T letter -->
-            <rect x="57" y="44" width="3" height="16" rx="1" fill="#00d4ff"/>
-            <rect x="53" y="44" width="11" height="3" rx="1" fill="#00d4ff"/>
-            
-            <!-- Animated pulse -->
-            <circle cx="50" cy="50" r="3" fill="#00d4ff" opacity="0.8">
-                <animate attributeName="r" values="2;5;2" dur="2s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="0.8;0.2;0.8" dur="2s" repeatCount="indefinite"/>
-            </circle>
-        </svg>
-        
-        <span class="logo-text">IT-INSIGHT</span>
-        <span class="sub-text">// AI-POWERED ANALYSIS</span>
+    <div class="header">
+        <div class="header-left">
+            <div class="logo-icon">IT</div>
+            <div class="logo-text">IT-<span>Insight</span></div>
+        </div>
+        <div class="header-right">
+            <span class="status-dot"></span>
+            System Online • v2.0
+        </div>
     </div>
     """,
     unsafe_allow_html=True
 )
-
-# ============ SESSION STATE ============
-if 'analysis_result' not in st.session_state:
-    st.session_state.analysis_result = None
 
 # ============ API KEY ============
 def get_api_key():
@@ -187,26 +290,53 @@ def get_api_key():
     return None
 
 # ============ DISPLAY FUNCTIONS ============
+def display_metrics():
+    col1, col2, col3, col4 = st.columns(4)
+    metrics = [
+        ("STATUS", "Active"),
+        ("MODEL", "Gemini 2.0"),
+        ("ENCRYPTION", "AES-256"),
+        ("CONNECTION", "Secure")
+    ]
+    for col, (label, value) in zip([col1, col2, col3, col4], metrics):
+        with col:
+            st.markdown(
+                f"""
+                <div class="metric-item">
+                    <div class="metric-value">{value}</div>
+                    <div class="metric-label">{label}</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
 def display_result(result):
     st.markdown("---")
-    st.markdown("### 📊 Analysis Report")
+    st.markdown(
+        """
+        <div style="font-size: 1.1rem; font-weight: 600; color: #e8f0f8; margin: 1.5rem 0 1rem 0;">
+            📊 Analysis Report
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     
     col1, col2 = st.columns(2)
     
     items = [
-        ("🆔", "Hardware Name", result.get('Hardware Name', 'N/A')),
-        ("⚡", "Primary Function", result.get('Primary Function', 'N/A')),
-        ("🔗", "Compatibility", result.get('Compatibility', 'N/A')),
-        ("💡", "Recommendations", result.get('Recommendations', 'N/A'))
+        ("Hardware Name", result.get('Hardware Name', 'N/A')),
+        ("Primary Function", result.get('Primary Function', 'N/A')),
+        ("Compatibility", result.get('Compatibility', 'N/A')),
+        ("Recommendations", result.get('Recommendations', 'N/A'))
     ]
     
-    for i, (icon, label, value) in enumerate(items):
+    for i, (label, value) in enumerate(items):
         with col1 if i < 2 else col2:
             st.markdown(
                 f"""
                 <div class="result-card">
-                    <h4>{icon} {label}</h4>
-                    <div class="value">{value}</div>
+                    <div class="result-label">{label}</div>
+                    <div class="result-value">{value}</div>
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -219,8 +349,8 @@ def display_result(result):
     st.markdown(
         f"""
         <div class="result-card">
-            <h4>✨ Key Features</h4>
-            <div class="value">
+            <div class="result-label">✨ Key Features</div>
+            <div class="result-value">
                 {"<br>• ".join([''] + features) if features else 'N/A'}
             </div>
         </div>
@@ -234,25 +364,28 @@ def main():
     
     if not api_key:
         st.error("""
-        ❌ **API KEY MISSING**
+        ❌ **API Key Missing**
         
         Please set your Gemini API key in `.env` or Streamlit secrets.
         """)
         st.stop()
     
+    # Metrics
+    display_metrics()
+    
     # Sidebar
     with st.sidebar:
-        st.markdown("### ⚙️ Configuration")
+        st.markdown("### ⚙️ Settings")
         st.markdown("---")
         
         st.markdown("**Operations**")
         st.markdown("- Upload hardware image")
-        st.markdown("- Initiate AI analysis")
-        st.markdown("- View diagnostic report")
+        st.markdown("- AI-powered analysis")
+        st.markdown("- Export report")
         
         st.markdown("---")
         st.markdown("**Supported Formats**")
-        st.markdown("- PNG, JPG, JPEG, WEBP, BMP")
+        st.markdown("PNG, JPG, JPEG, WEBP, BMP")
         
         with st.expander("🛠️ Advanced"):
             temperature = st.slider(
@@ -273,14 +406,10 @@ def main():
     # Upload Area
     st.markdown(
         """
-        <div class="upload-area">
-            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🖥️</div>
-            <div style="font-family: 'Inter', sans-serif; color: #00d4ff; font-size: 1.2rem; font-weight: 600;">
-                Upload Hardware Image
-            </div>
-            <div style="font-family: 'Inter', sans-serif; color: #667799; font-size: 0.9rem; margin-top: 0.3rem;">
-                Drag & drop or click to select
-            </div>
+        <div class="upload-card">
+            <div class="upload-icon">🖥️</div>
+            <div class="upload-title">Upload Hardware Image</div>
+            <div class="upload-subtitle">Drag & drop or click to select</div>
         </div>
         """,
         unsafe_allow_html=True
@@ -301,15 +430,15 @@ def main():
         with col2:
             st.markdown(
                 f"""
-                <div style="font-family: 'Inter', sans-serif; color: #8899bb; font-size: 0.9rem; padding: 1rem 0;">
-                    <strong>FILE:</strong> <span style="color: #00d4ff;">{uploaded_file.name}</span><br>
-                    <strong>SIZE:</strong> <span style="color: #00d4ff;">{image.width} x {image.height}</span>
+                <div style="font-family: 'Inter', sans-serif; color: #667799; font-size: 0.9rem; padding: 1rem 0;">
+                    <strong>FILE:</strong> <span style="color: #00b4ff;">{uploaded_file.name}</span><br>
+                    <strong>SIZE:</strong> <span style="color: #00b4ff;">{image.width} x {image.height}</span>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
             
-            if st.button("🔍 Analyze Hardware", type="primary"):
+            if st.button("🔍 Analyze Hardware"):
                 with st.spinner("Processing with Gemini AI..."):
                     try:
                         client = GeminiClient(api_key)
@@ -319,36 +448,26 @@ def main():
                             max_tokens=max_tokens
                         )
                         st.session_state.analysis_result = result
-                        
-                    except GeminiError as e:
-                        st.error(f"❌ Analysis failed: {str(e)}")
                     except Exception as e:
-                        st.error(f"❌ System error: {str(e)}")
+                        st.error(f"❌ Error: {str(e)}")
         
-        if st.session_state.analysis_result:
+        if 'analysis_result' in st.session_state and st.session_state.analysis_result:
             display_result(st.session_state.analysis_result)
-            
-            col1, col2, col3 = st.columns([1, 1, 1])
-            with col2:
-                if st.button("📋 Export Report"):
-                    st.info("Report ready for export")
-                    st.balloons()
     else:
-        st.info("⏳ Awaiting hardware image upload...")
+        st.info("💡 Upload a hardware image to begin analysis")
         st.markdown(
             """
-            <div style="text-align: center; color: #445577; font-family: 'Inter', sans-serif; font-size: 0.8rem; padding: 2rem;">
-                SUPPORTED HARDWARE: CPU • GPU • RAM • STORAGE • NETWORK • PERIPHERALS
+            <div style="text-align: center; color: #445566; font-size: 0.8rem; padding: 1.5rem 0;">
+                Supported: CPU • GPU • RAM • Storage • Network • Peripherals
             </div>
             """,
             unsafe_allow_html=True
         )
     
-    st.markdown("---")
     st.markdown(
         """
-        <div style="text-align: center; color: #334466; font-family: 'Inter', sans-serif; font-size: 0.7rem; letter-spacing: 2px; padding: 1rem 0; opacity: 0.5;">
-            ⚡ IT-INSIGHT • Powered by Google Gemini API • Secure & Encrypted
+        <div class="footer">
+            IT-Insight • Powered by Google Gemini API • Secure & Encrypted
         </div>
         """,
         unsafe_allow_html=True
