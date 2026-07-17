@@ -58,19 +58,12 @@ st.markdown("""
         font-size: 3.5rem;
         font-weight: 900;
         text-align: center;
-        background: linear-gradient(135deg, #7b2ffc, #00d4ff, #ff6fd8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #00d4ff !important;
+        text-shadow: 0 0 30px rgba(0, 212, 255, 0.3), 0 0 60px rgba(123, 47, 252, 0.2);
         padding: 1rem 0;
         letter-spacing: 4px;
-        animation: galaxyGlow 3s ease-in-out infinite;
         position: relative;
         z-index: 1;
-    }
-    
-    @keyframes galaxyGlow {
-        0%, 100% { filter: drop-shadow(0 0 30px rgba(123, 47, 252, 0.3)); }
-        50% { filter: drop-shadow(0 0 60px rgba(123, 47, 252, 0.6)); }
     }
     
     .sub-header {
@@ -280,19 +273,64 @@ def get_api_key():
 
 # ============ DISPLAY FUNCTIONS ============
 def display_header():
-    col1, col2, col3 = st.columns([1, 4, 1])
-    with col2:
-        st.markdown('<p class="main-header">🌌 IT-INSIGHT</p>', unsafe_allow_html=True)
+    col1, col2 = st.columns([1, 6])
+    
+    with col1:
         st.markdown(
-            '<p class="sub-header">// AI-POWERED HARDWARE ANALYSIS //</p>',
+            """
+            <div style="text-align: center; padding-top: 0.3rem;">
+                <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Outer circle - Galaxy ring -->
+                    <circle cx="50" cy="50" r="45" stroke="#00d4ff" stroke-width="2" fill="none" opacity="0.3"/>
+                    <circle cx="50" cy="50" r="35" stroke="#7b2ffc" stroke-width="1.5" fill="none" opacity="0.4"/>
+                    
+                    <!-- Center - IT symbol -->
+                    <rect x="35" y="30" width="30" height="40" rx="4" fill="#00d4ff" opacity="0.9"/>
+                    <rect x="42" y="38" width="16" height="24" rx="2" fill="#0a0a1a"/>
+                    
+                    <!-- I letter -->
+                    <rect x="40" y="35" width="4" height="30" rx="1" fill="#00d4ff"/>
+                    
+                    <!-- T letter -->
+                    <rect x="48" y="35" width="4" height="30" rx="1" fill="#00d4ff"/>
+                    <rect x="44" y="35" width="12" height="4" rx="1" fill="#00d4ff"/>
+                    
+                    <!-- Stars -->
+                    <circle cx="15" cy="20" r="1.5" fill="#fff" opacity="0.6"/>
+                    <circle cx="85" cy="25" r="1" fill="#fff" opacity="0.5"/>
+                    <circle cx="20" cy="80" r="1.5" fill="#fff" opacity="0.4"/>
+                    <circle cx="80" cy="75" r="1" fill="#fff" opacity="0.6"/>
+                    
+                    <!-- Glowing dots -->
+                    <circle cx="50" cy="50" r="2" fill="#00d4ff" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+            </div>
+            """,
             unsafe_allow_html=True
         )
     
-    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         st.markdown(
             """
-            <div style="text-align:center;margin-top:-0.5rem;margin-bottom:1rem;">
+            <div>
+                <p style="font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900; color: #00d4ff !important; margin-bottom: 0; text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);">
+                    IT-INSIGHT
+                </p>
+                <p style="font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; color: #7b9fff !important; margin-top: -0.5rem; border-bottom: none;">
+                    // AI-POWERED HARDWARE ANALYSIS //
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown(
+            """
+            <div style="text-align: center; margin-top: 0.5rem; margin-bottom: 1rem;">
                 <span class="status-dot"></span>
                 <span style="font-family:'Share Tech Mono',monospace;color:#7b9fff;font-size:0.8rem;opacity:0.7;">
                     SYSTEM ONLINE // v2.0
@@ -537,4 +575,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
