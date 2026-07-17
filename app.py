@@ -278,22 +278,32 @@ def display_header():
     with col1:
         st.markdown(
             """
-            <div style="text-align: center; padding-top: 0.3rem;">
-                <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="45" stroke="#00d4ff" stroke-width="2" fill="none" opacity="0.3"/>
-                    <circle cx="50" cy="50" r="35" stroke="#7b2ffc" stroke-width="1.5" fill="none" opacity="0.4"/>
-                    <rect x="35" y="30" width="30" height="40" rx="4" fill="#00d4ff" opacity="0.9"/>
-                    <rect x="42" y="38" width="16" height="24" rx="2" fill="#0a0a1a"/>
-                    <rect x="40" y="35" width="4" height="30" rx="1" fill="#00d4ff"/>
-                    <rect x="48" y="35" width="4" height="30" rx="1" fill="#00d4ff"/>
-                    <rect x="44" y="35" width="12" height="4" rx="1" fill="#00d4ff"/>
-                    <circle cx="15" cy="20" r="1.5" fill="#fff" opacity="0.6"/>
-                    <circle cx="85" cy="25" r="1" fill="#fff" opacity="0.5"/>
-                    <circle cx="20" cy="80" r="1.5" fill="#fff" opacity="0.4"/>
-                    <circle cx="80" cy="75" r="1" fill="#fff" opacity="0.6"/>
-                    <circle cx="50" cy="50" r="2" fill="#00d4ff" opacity="0.8">
-                        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+            <div style="text-align: center; padding-top: 0.2rem;">
+                <svg width="65" height="65" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Outer rings -->
+                    <circle cx="50" cy="50" r="48" stroke="#00d4ff" stroke-width="1.5" fill="none" opacity="0.25"/>
+                    <circle cx="50" cy="50" r="42" stroke="#7b2ffc" stroke-width="1" fill="none" opacity="0.3"/>
+                    
+                    <!-- Shield/Tech shape -->
+                    <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" 
+                          fill="none" stroke="#00d4ff" stroke-width="1.8" opacity="0.6"/>
+                    
+                    <!-- Animated center dot -->
+                    <circle cx="50" cy="50" r="4" fill="#00d4ff" opacity="0.9">
+                        <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
                     </circle>
+                    
+                    <!-- I + T letters -->
+                    <rect x="42" y="38" width="3" height="24" rx="1" fill="#00d4ff"/>
+                    <rect x="55" y="38" width="3" height="24" rx="1" fill="#00d4ff"/>
+                    <rect x="42" y="38" width="16" height="3" rx="1" fill="#00d4ff"/>
+                    
+                    <!-- Accent dots -->
+                    <circle cx="25" cy="25" r="1.5" fill="#7b2ffc" opacity="0.5"/>
+                    <circle cx="75" cy="25" r="1.5" fill="#7b2ffc" opacity="0.5"/>
+                    <circle cx="25" cy="75" r="1.5" fill="#7b2ffc" opacity="0.5"/>
+                    <circle cx="75" cy="75" r="1.5" fill="#7b2ffc" opacity="0.5"/>
                 </svg>
             </div>
             """,
