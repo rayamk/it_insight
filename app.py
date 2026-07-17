@@ -280,28 +280,17 @@ def display_header():
             """
             <div style="text-align: center; padding-top: 0.3rem;">
                 <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Outer circle - Galaxy ring -->
                     <circle cx="50" cy="50" r="45" stroke="#00d4ff" stroke-width="2" fill="none" opacity="0.3"/>
                     <circle cx="50" cy="50" r="35" stroke="#7b2ffc" stroke-width="1.5" fill="none" opacity="0.4"/>
-                    
-                    <!-- Center - IT symbol -->
                     <rect x="35" y="30" width="30" height="40" rx="4" fill="#00d4ff" opacity="0.9"/>
                     <rect x="42" y="38" width="16" height="24" rx="2" fill="#0a0a1a"/>
-                    
-                    <!-- I letter -->
                     <rect x="40" y="35" width="4" height="30" rx="1" fill="#00d4ff"/>
-                    
-                    <!-- T letter -->
                     <rect x="48" y="35" width="4" height="30" rx="1" fill="#00d4ff"/>
                     <rect x="44" y="35" width="12" height="4" rx="1" fill="#00d4ff"/>
-                    
-                    <!-- Stars -->
                     <circle cx="15" cy="20" r="1.5" fill="#fff" opacity="0.6"/>
                     <circle cx="85" cy="25" r="1" fill="#fff" opacity="0.5"/>
                     <circle cx="20" cy="80" r="1.5" fill="#fff" opacity="0.4"/>
                     <circle cx="80" cy="75" r="1" fill="#fff" opacity="0.6"/>
-                    
-                    <!-- Glowing dots -->
                     <circle cx="50" cy="50" r="2" fill="#00d4ff" opacity="0.8">
                         <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
                     </circle>
