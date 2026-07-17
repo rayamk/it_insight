@@ -26,9 +26,8 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
     
     .stApp {
-        background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 25%, #0d1b2a 50%, #1b0a2e 75%, #0a0a1a 100%);
-        background-attachment: fixed;
-        position: relative;
+        background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 25%, #0d1b2a 50%, #1b0a2e 75%, #0a0a1a 100%) !important;
+        background-attachment: fixed !important;
     }
     
     .stApp::before {
@@ -46,46 +45,12 @@ st.markdown("""
             radial-gradient(2px 2px at 160px 30px, #ddd, transparent),
             radial-gradient(1px 1px at 200px 60px, #fff, transparent),
             radial-gradient(2px 2px at 250px 90px, rgba(255,255,255,0.7), transparent),
-            radial-gradient(1px 1px at 300px 20px, #eee, transparent),
-            radial-gradient(2px 2px at 350px 70px, #fff, transparent),
-            radial-gradient(1px 1px at 400px 50px, rgba(255,255,255,0.5), transparent);
+            radial-gradient(1px 1px at 300px 20px, #eee, transparent);
         background-size: 200px 200px;
         background-repeat: repeat;
-        opacity: 0.5;
+        opacity: 0.4;
         pointer-events: none;
         z-index: 0;
-    }
-    
-    .stApp::after {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: 
-            radial-gradient(ellipse at 10% 20%, rgba(88, 0, 255, 0.08) 0%, transparent 50%),
-            radial-gradient(ellipse at 90% 80%, rgba(0, 100, 255, 0.06) 0%, transparent 50%),
-            radial-gradient(ellipse at 50% 50%, rgba(255, 0, 200, 0.03) 0%, transparent 70%);
-        pointer-events: none;
-        z-index: 0;
-    }
-    
-    .scanline {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        background: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 3px,
-            rgba(100, 50, 255, 0.03) 3px,
-            rgba(100, 50, 255, 0.03) 4px
-        );
-        z-index: 9999;
     }
     
     .main-header {
@@ -93,157 +58,110 @@ st.markdown("""
         font-size: 3.5rem;
         font-weight: 900;
         text-align: center;
-        background: linear-gradient(135deg, #7b2ffc, #00d4ff, #7b2ffc, #ff6fd8);
-        background-size: 300% 300%;
+        background: linear-gradient(135deg, #7b2ffc, #00d4ff, #ff6fd8);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        text-shadow: 
-            0 0 40px rgba(123, 47, 252, 0.3),
-            0 0 80px rgba(0, 212, 255, 0.2),
-            0 0 120px rgba(255, 111, 216, 0.1);
         padding: 1rem 0;
         letter-spacing: 4px;
-        animation: galaxyGlow 4s ease-in-out infinite;
+        animation: galaxyGlow 3s ease-in-out infinite;
         position: relative;
         z-index: 1;
     }
     
     @keyframes galaxyGlow {
-        0%, 100% { 
-            background-position: 0% 50%;
-            text-shadow: 0 0 40px rgba(123, 47, 252, 0.3), 0 0 80px rgba(0, 212, 255, 0.2);
-        }
-        50% { 
-            background-position: 100% 50%;
-            text-shadow: 0 0 60px rgba(123, 47, 252, 0.5), 0 0 120px rgba(0, 212, 255, 0.3), 0 0 180px rgba(255, 111, 216, 0.2);
-        }
+        0%, 100% { filter: drop-shadow(0 0 30px rgba(123, 47, 252, 0.3)); }
+        50% { filter: drop-shadow(0 0 60px rgba(123, 47, 252, 0.6)); }
     }
     
     .sub-header {
         font-family: 'Share Tech Mono', monospace;
         font-size: 1.1rem;
         text-align: center;
-        color: #7b9fff;
-        opacity: 0.9;
+        color: #7b9fff !important;
         letter-spacing: 6px;
-        border-bottom: 1px solid rgba(123, 47, 252, 0.15);
+        border-bottom: 1px solid rgba(123, 47, 252, 0.2);
         padding-bottom: 1rem;
         margin-bottom: 2rem;
-        text-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
         position: relative;
         z-index: 1;
     }
     
     .result-card {
-        background: rgba(10, 10, 30, 0.7);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(123, 47, 252, 0.2);
-        border-radius: 16px;
-        padding: 1.8rem;
-        margin: 1rem 0;
-        box-shadow: 
-            0 0 30px rgba(123, 47, 252, 0.05),
-            0 0 60px rgba(0, 212, 255, 0.03),
-            inset 0 0 30px rgba(123, 47, 252, 0.02);
-        transition: all 0.4s ease;
+        background: rgba(10, 10, 30, 0.75) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(123, 47, 252, 0.3) !important;
+        border-radius: 16px !important;
+        padding: 1.5rem !important;
+        margin: 1rem 0 !important;
+        box-shadow: 0 0 40px rgba(123, 47, 252, 0.1) !important;
+        transition: all 0.3s ease !important;
         position: relative;
-        overflow: hidden;
         z-index: 1;
     }
     
-    .result-card::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(45deg, #7b2ffc, #00d4ff, #ff6fd8, #7b2ffc);
-        background-size: 400% 400%;
-        border-radius: 16px;
-        z-index: -1;
-        animation: galaxyBorder 5s ease-in-out infinite;
-        opacity: 0.25;
-    }
-    
-    @keyframes galaxyBorder {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-    
     .result-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 
-            0 0 50px rgba(123, 47, 252, 0.15),
-            0 0 80px rgba(0, 212, 255, 0.08);
-        border-color: rgba(123, 47, 252, 0.4);
+        transform: translateY(-3px) !important;
+        box-shadow: 0 0 60px rgba(123, 47, 252, 0.2) !important;
+        border-color: rgba(123, 47, 252, 0.6) !important;
     }
     
     .result-card h4 {
         font-family: 'Orbitron', sans-serif;
-        color: #7b9fff;
+        color: #7b9fff !important;
         font-size: 0.75rem;
-        letter-spacing: 3px;
+        letter-spacing: 2px;
         text-transform: uppercase;
-        margin-bottom: 0.8rem;
-        opacity: 0.8;
-        text-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
+        margin-bottom: 0.5rem;
     }
     
     .result-card .value {
         font-family: 'Share Tech Mono', monospace;
-        color: #d0d8ff;
+        color: #d0d8ff !important;
         font-size: 1.1rem;
-        line-height: 1.8;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+        line-height: 1.6;
     }
     
     .upload-area {
-        border: 2px dashed rgba(123, 47, 252, 0.25);
-        border-radius: 16px;
-        padding: 2.5rem;
-        text-align: center;
-        background: rgba(123, 47, 252, 0.03);
-        transition: all 0.4s ease;
+        border: 2px dashed rgba(123, 47, 252, 0.3) !important;
+        border-radius: 16px !important;
+        padding: 2rem !important;
+        text-align: center !important;
+        background: rgba(123, 47, 252, 0.05) !important;
+        transition: all 0.3s ease !important;
         position: relative;
         z-index: 1;
     }
     
     .upload-area:hover {
-        border-color: #7b2ffc;
-        background: rgba(123, 47, 252, 0.08);
-        box-shadow: 
-            0 0 40px rgba(123, 47, 252, 0.08),
-            inset 0 0 40px rgba(123, 47, 252, 0.03);
+        border-color: #7b2ffc !important;
+        background: rgba(123, 47, 252, 0.1) !important;
+        box-shadow: 0 0 50px rgba(123, 47, 252, 0.1) !important;
     }
     
     .upload-area .icon {
-        font-size: 4rem;
-        margin-bottom: 1rem;
+        font-size: 3.5rem;
         display: block;
+        margin-bottom: 0.5rem;
         animation: float 3s ease-in-out infinite;
-        filter: drop-shadow(0 0 30px rgba(123, 47, 252, 0.2));
     }
     
     @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-12px); }
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
     }
     
     .upload-area .title {
         font-family: 'Orbitron', sans-serif;
-        color: #7b9fff;
-        font-size: 1.2rem;
+        color: #7b9fff !important;
+        font-size: 1.1rem;
         letter-spacing: 2px;
-        text-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
     }
     
     .upload-area .subtitle {
         font-family: 'Share Tech Mono', monospace;
-        color: #6688aa;
+        color: #6688aa !important;
         font-size: 0.85rem;
-        margin-top: 0.5rem;
-        opacity: 0.8;
+        margin-top: 0.3rem;
     }
     
     .stButton > button {
@@ -252,34 +170,26 @@ st.markdown("""
         color: #0a0a1a !important;
         border: none !important;
         border-radius: 12px !important;
-        padding: 0.9rem 2.5rem !important;
+        padding: 0.8rem 2rem !important;
         font-weight: 700 !important;
         letter-spacing: 2px !important;
         text-transform: uppercase !important;
         transition: all 0.3s ease !important;
-        box-shadow: 
-            0 0 30px rgba(123, 47, 252, 0.2),
-            0 0 60px rgba(0, 212, 255, 0.1) !important;
+        box-shadow: 0 0 30px rgba(123, 47, 252, 0.2) !important;
         width: 100% !important;
         position: relative;
         z-index: 1;
     }
     
     .stButton > button:hover {
-        transform: scale(1.03) !important;
-        box-shadow: 
-            0 0 50px rgba(123, 47, 252, 0.4),
-            0 0 80px rgba(0, 212, 255, 0.2) !important;
+        transform: scale(1.02) !important;
+        box-shadow: 0 0 50px rgba(123, 47, 252, 0.4) !important;
     }
     
-    .css-1d391kg, .css-12oz5g7 {
-        background: rgba(10, 10, 26, 0.85) !important;
+    .css-1d391kg, .css-12oz5g7, [data-testid="stSidebar"] {
+        background: rgba(10, 10, 26, 0.9) !important;
         backdrop-filter: blur(15px) !important;
-        border-right: 1px solid rgba(123, 47, 252, 0.08) !important;
-    }
-    
-    .css-1d391kg .stMarkdown, .css-12oz5g7 .stMarkdown {
-        color: #aab8d0 !important;
+        border-right: 1px solid rgba(123, 47, 252, 0.1) !important;
     }
     
     .status-dot {
@@ -289,11 +199,8 @@ st.markdown("""
         border-radius: 50%;
         margin-right: 8px;
         animation: blink 1.5s ease-in-out infinite;
-    }
-    
-    .status-dot.online {
-        background: #7b2ffc;
-        box-shadow: 0 0 20px #7b2ffc, 0 0 40px rgba(123, 47, 252, 0.3);
+        background: #7b2ffc !important;
+        box-shadow: 0 0 20px #7b2ffc !important;
     }
     
     @keyframes blink {
@@ -302,84 +209,37 @@ st.markdown("""
     }
     
     .metric-box {
-        background: rgba(123, 47, 252, 0.05);
-        border: 1px solid rgba(123, 47, 252, 0.1);
-        border-radius: 12px;
-        padding: 1.2rem;
-        text-align: center;
-        font-family: 'Share Tech Mono', monospace;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
+        background: rgba(123, 47, 252, 0.08) !important;
+        border: 1px solid rgba(123, 47, 252, 0.15) !important;
+        border-radius: 12px !important;
+        padding: 1rem !important;
+        text-align: center !important;
+        transition: all 0.3s ease !important;
     }
     
     .metric-box:hover {
-        border-color: rgba(123, 47, 252, 0.3);
-        box-shadow: 0 0 30px rgba(123, 47, 252, 0.05);
+        border-color: rgba(123, 47, 252, 0.4) !important;
+        box-shadow: 0 0 30px rgba(123, 47, 252, 0.05) !important;
     }
     
     .metric-box .number {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        color: #7b9fff;
+        color: #7b9fff !important;
         font-family: 'Orbitron', sans-serif;
-        text-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
     }
     
     .metric-box .label {
         font-size: 0.65rem;
-        color: #6688aa;
+        color: #6688aa !important;
         text-transform: uppercase;
         letter-spacing: 2px;
-        margin-top: 0.3rem;
-    }
-    
-    .stAlert {
-        background: rgba(255, 0, 100, 0.08) !important;
-        border: 1px solid rgba(255, 0, 100, 0.2) !important;
-        border-radius: 12px !important;
-        backdrop-filter: blur(10px) !important;
-    }
-    
-    .stAlert .stMarkdown {
-        color: #ff6b9d !important;
-        font-family: 'Share Tech Mono', monospace !important;
-    }
-    
-    .stInfo {
-        background: rgba(123, 47, 252, 0.05) !important;
-        border: 1px solid rgba(123, 47, 252, 0.15) !important;
-        border-radius: 12px !important;
-        backdrop-filter: blur(10px) !important;
-    }
-    
-    .stInfo .stMarkdown {
-        color: #88bbdd !important;
-        font-family: 'Share Tech Mono', monospace !important;
-    }
-    
-    ::-webkit-scrollbar {
-        width: 6px;
-        background: #0a0a1a;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #7b2ffc, #00d4ff);
-        border-radius: 3px;
-        box-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
-    }
-    ::-webkit-scrollbar-track {
-        background: rgba(10, 10, 26, 0.5);
-    }
-    
-    @media (max-width: 768px) {
-        .main-header { font-size: 2rem; }
-        .result-card { padding: 1rem; }
-        .result-card .value { font-size: 0.95rem; }
-        .upload-area { padding: 1.5rem; }
+        margin-top: 0.2rem;
     }
     
     .footer-text {
         text-align: center;
-        color: #334466;
+        color: #334466 !important;
         font-family: 'Share Tech Mono', monospace;
         font-size: 0.7rem;
         letter-spacing: 2px;
@@ -388,17 +248,22 @@ st.markdown("""
         position: relative;
         z-index: 1;
     }
+    
+    @media (max-width: 768px) {
+        .main-header { font-size: 2rem; }
+        .result-card { padding: 1rem !important; }
+        .result-card .value { font-size: 0.95rem; }
+        .upload-area { padding: 1.5rem !important; }
+    }
 </style>
 
-<div class="scanline"></div>
+<div style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(100,50,255,0.02) 3px,rgba(100,50,255,0.02) 4px);z-index:9999;"></div>
 """, unsafe_allow_html=True)
 
 # ============ SESSION STATE ============
 def initialize_session_state():
     if 'analysis_result' not in st.session_state:
         st.session_state.analysis_result = None
-    if 'uploaded_image' not in st.session_state:
-        st.session_state.uploaded_image = None
 
 # ============ API KEY ============
 def get_api_key():
@@ -427,9 +292,9 @@ def display_header():
     with col2:
         st.markdown(
             """
-            <div style="text-align: center; margin-top: -0.5rem; margin-bottom: 1rem;">
-                <span class="status-dot online"></span>
-                <span style="font-family: 'Share Tech Mono', monospace; color: #7b9fff; font-size: 0.8rem; opacity: 0.7;">
+            <div style="text-align:center;margin-top:-0.5rem;margin-bottom:1rem;">
+                <span class="status-dot"></span>
+                <span style="font-family:'Share Tech Mono',monospace;color:#7b9fff;font-size:0.8rem;opacity:0.7;">
                     SYSTEM ONLINE // v2.0
                 </span>
             </div>
@@ -451,8 +316,8 @@ def display_metrics():
             st.markdown(
                 f"""
                 <div class="metric-box">
-                    <div style="font-size: 1.5rem;">{icon}</div>
-                    <div class="number" style="font-size: 0.9rem; color: #7bb8ff;">{value}</div>
+                    <div style="font-size:1.5rem;">{icon}</div>
+                    <div class="number" style="font-size:0.9rem;color:#7bb8ff;">{value}</div>
                     <div class="label">{label}</div>
                 </div>
                 """,
@@ -463,7 +328,7 @@ def display_result(result):
     st.markdown("---")
     st.markdown(
         """
-        <div style="text-align: center; font-family: 'Orbitron', sans-serif; color: #7b9fff; letter-spacing: 4px; font-size: 1.2rem; margin: 2rem 0;">
+        <div style="text-align:center;font-family:'Orbitron',sans-serif;color:#7b9fff;letter-spacing:4px;font-size:1.2rem;margin:2rem 0;">
             ═══ ANALYSIS REPORT ═══
         </div>
         """,
@@ -516,9 +381,9 @@ def main():
     with st.sidebar:
         st.markdown(
             """
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <div style="font-size: 2rem;">🪐</div>
-                <div style="font-family: 'Orbitron', sans-serif; color: #7b9fff; font-size: 0.8rem; letter-spacing: 2px;">
+            <div style="text-align:center;margin-bottom:2rem;">
+                <div style="font-size:2rem;">🪐</div>
+                <div style="font-family:'Orbitron',sans-serif;color:#7b9fff;font-size:0.8rem;letter-spacing:2px;">
                     SYSTEM CONSOLE
                 </div>
             </div>
@@ -568,7 +433,7 @@ def main():
         st.markdown("---")
         st.markdown(
             """
-            <div style="text-align: center; font-size: 0.7rem; color: #445577; font-family: 'Share Tech Mono', monospace;">
+            <div style="text-align:center;font-size:0.7rem;color:#445577;font-family:'Share Tech Mono',monospace;">
                 IT-INSIGHT v2.0<br>
                 SECURE CONNECTION
             </div>
@@ -612,9 +477,9 @@ def main():
         with col2:
             st.markdown(
                 """
-                <div style="font-family: 'Share Tech Mono', monospace; color: #6688aa; font-size: 0.9rem; padding: 1rem 0;">
-                    FILE: <span style="color: #7b9fff;">{}</span><br>
-                    SIZE: <span style="color: #7b9fff;">{} x {}</span>
+                <div style="font-family:'Share Tech Mono',monospace;color:#6688aa;font-size:0.9rem;padding:1rem 0;">
+                    FILE: <span style="color:#7b9fff;">{}</span><br>
+                    SIZE: <span style="color:#7b9fff;">{} x {}</span>
                 </div>
                 """.format(
                     uploaded_file.name,
@@ -653,7 +518,7 @@ def main():
         st.info("⏳ Awaiting hardware image upload...")
         st.markdown(
             """
-            <div style="text-align: center; color: #445577; font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; padding: 2rem;">
+            <div style="text-align:center;color:#445577;font-family:'Share Tech Mono',monospace;font-size:0.8rem;padding:2rem;">
                 SUPPORTED HARDWARE: CPU • GPU • RAM • STORAGE • NETWORK • PERIPHERALS
             </div>
             """,
@@ -672,3 +537,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
