@@ -1,6 +1,6 @@
 """
 IT-Insight: Hardware Analysis Tool
-Streamlit application with Neon Light IT/TECHNO style UI
+Streamlit application with Space/Galaxy Theme UI
 """
 
 import streamlit as st
@@ -15,21 +15,25 @@ load_dotenv()
 # Page configuration
 st.set_page_config(
     page_title="IT-Insight - Hardware Analyzer",
-    page_icon="💻",
+    page_icon="🌌",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# ============ CUSTOM CSS - NEON LIGHT THEME ============
+# ============ CUSTOM CSS - SPACE/GALAXY THEME ============
 st.markdown("""
 <style>
+    /* Import fonts */
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
     
+    /* Main background - Deep space with galaxy gradient */
     .stApp {
-        background: linear-gradient(135deg, #0a0e1a 0%, #1a0a2e 50%, #0a1a2a 100%);
+        background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 25%, #0d1b2a 50%, #1b0a2e 75%, #0a0a1a 100%);
         background-attachment: fixed;
+        position: relative;
     }
     
+    /* Stars overlay */
     .stApp::before {
         content: '';
         position: fixed;
@@ -37,14 +41,41 @@ st.markdown("""
         left: 0;
         width: 100%;
         height: 100%;
-        background: 
-            radial-gradient(ellipse at 20% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 50%, rgba(0, 204, 255, 0.05) 0%, transparent 50%),
-            radial-gradient(ellipse at 50% 100%, rgba(112, 0, 255, 0.05) 0%, transparent 50%);
+        background-image: 
+            radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+            radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+            radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+            radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+            radial-gradient(2px 2px at 160px 30px, #ddd, transparent),
+            radial-gradient(1px 1px at 200px 60px, #fff, transparent),
+            radial-gradient(2px 2px at 250px 90px, rgba(255,255,255,0.7), transparent),
+            radial-gradient(1px 1px at 300px 20px, #eee, transparent),
+            radial-gradient(2px 2px at 350px 70px, #fff, transparent),
+            radial-gradient(1px 1px at 400px 50px, rgba(255,255,255,0.5), transparent);
+        background-size: 200px 200px;
+        background-repeat: repeat;
+        opacity: 0.5;
         pointer-events: none;
         z-index: 0;
     }
     
+    /* Nebula glow effects */
+    .stApp::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(ellipse at 10% 20%, rgba(88, 0, 255, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 90% 80%, rgba(0, 100, 255, 0.06) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 50%, rgba(255, 0, 200, 0.03) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    /* Scanline effect */
     .scanline {
         position: fixed;
         top: 0;
@@ -56,66 +87,72 @@ st.markdown("""
             0deg,
             transparent,
             transparent 3px,
-            rgba(0, 255, 136, 0.02) 3px,
-            rgba(0, 255, 136, 0.02) 4px
+            rgba(100, 50, 255, 0.03) 3px,
+            rgba(100, 50, 255, 0.03) 4px
         );
         z-index: 9999;
     }
     
+    /* Header - Galaxy gradient */
     .main-header {
         font-family: 'Orbitron', sans-serif;
         font-size: 3.5rem;
         font-weight: 900;
         text-align: center;
-        background: linear-gradient(135deg, #00ff88, #00ccff, #a855f7);
+        background: linear-gradient(135deg, #7b2ffc, #00d4ff, #7b2ffc, #ff6fd8);
+        background-size: 300% 300%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-shadow: 
-            0 0 40px rgba(0, 255, 136, 0.3),
-            0 0 80px rgba(0, 204, 255, 0.2),
-            0 0 120px rgba(168, 85, 247, 0.1);
+            0 0 40px rgba(123, 47, 252, 0.3),
+            0 0 80px rgba(0, 212, 255, 0.2),
+            0 0 120px rgba(255, 111, 216, 0.1);
         padding: 1rem 0;
         letter-spacing: 4px;
-        animation: glowPulse 3s ease-in-out infinite;
+        animation: galaxyGlow 4s ease-in-out infinite;
         position: relative;
         z-index: 1;
     }
     
-    @keyframes glowPulse {
+    @keyframes galaxyGlow {
         0%, 100% { 
-            text-shadow: 0 0 40px rgba(0, 255, 136, 0.3), 0 0 80px rgba(0, 204, 255, 0.2);
+            background-position: 0% 50%;
+            text-shadow: 0 0 40px rgba(123, 47, 252, 0.3), 0 0 80px rgba(0, 212, 255, 0.2);
         }
         50% { 
-            text-shadow: 0 0 60px rgba(0, 255, 136, 0.6), 0 0 120px rgba(0, 204, 255, 0.4), 0 0 160px rgba(168, 85, 247, 0.2);
+            background-position: 100% 50%;
+            text-shadow: 0 0 60px rgba(123, 47, 252, 0.5), 0 0 120px rgba(0, 212, 255, 0.3), 0 0 180px rgba(255, 111, 216, 0.2);
         }
     }
     
+    /* Sub-header */
     .sub-header {
         font-family: 'Share Tech Mono', monospace;
         font-size: 1.1rem;
         text-align: center;
-        color: #00ff88;
+        color: #7b9fff;
         opacity: 0.9;
         letter-spacing: 6px;
-        border-bottom: 1px solid rgba(0, 255, 136, 0.15);
+        border-bottom: 1px solid rgba(123, 47, 252, 0.15);
         padding-bottom: 1rem;
         margin-bottom: 2rem;
-        text-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        text-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
         position: relative;
         z-index: 1;
     }
     
+    /* Cards - Glass morphism with galaxy border */
     .result-card {
-        background: rgba(10, 14, 30, 0.75);
+        background: rgba(10, 10, 30, 0.7);
         backdrop-filter: blur(20px);
-        border: 1px solid rgba(0, 255, 136, 0.2);
+        border: 1px solid rgba(123, 47, 252, 0.2);
         border-radius: 16px;
         padding: 1.8rem;
         margin: 1rem 0;
         box-shadow: 
-            0 0 30px rgba(0, 255, 136, 0.05),
-            0 0 60px rgba(0, 204, 255, 0.03),
-            inset 0 0 30px rgba(0, 255, 136, 0.02);
+            0 0 30px rgba(123, 47, 252, 0.05),
+            0 0 60px rgba(0, 212, 255, 0.03),
+            inset 0 0 30px rgba(123, 47, 252, 0.02);
         transition: all 0.4s ease;
         position: relative;
         overflow: hidden;
@@ -129,15 +166,15 @@ st.markdown("""
         left: -2px;
         right: -2px;
         bottom: -2px;
-        background: linear-gradient(45deg, #00ff88, #00ccff, #a855f7, #00ff88);
+        background: linear-gradient(45deg, #7b2ffc, #00d4ff, #ff6fd8, #7b2ffc);
         background-size: 400% 400%;
         border-radius: 16px;
         z-index: -1;
-        animation: borderGlow 4s ease-in-out infinite;
+        animation: galaxyBorder 5s ease-in-out infinite;
         opacity: 0.25;
     }
     
-    @keyframes borderGlow {
+    @keyframes galaxyBorder {
         0%, 100% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
     }
@@ -145,47 +182,49 @@ st.markdown("""
     .result-card:hover {
         transform: translateY(-4px);
         box-shadow: 
-            0 0 50px rgba(0, 255, 136, 0.15),
-            0 0 80px rgba(0, 204, 255, 0.08);
-        border-color: rgba(0, 255, 136, 0.4);
+            0 0 50px rgba(123, 47, 252, 0.15),
+            0 0 80px rgba(0, 212, 255, 0.08);
+        border-color: rgba(123, 47, 252, 0.4);
     }
     
+    /* Card text */
     .result-card h4 {
         font-family: 'Orbitron', sans-serif;
-        color: #00ff88;
+        color: #7b9fff;
         font-size: 0.75rem;
         letter-spacing: 3px;
         text-transform: uppercase;
         margin-bottom: 0.8rem;
         opacity: 0.8;
-        text-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        text-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
     }
     
     .result-card .value {
         font-family: 'Share Tech Mono', monospace;
-        color: #e8f0ff;
+        color: #d0d8ff;
         font-size: 1.1rem;
         line-height: 1.8;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
     }
     
+    /* Upload area - Galaxy pulse */
     .upload-area {
-        border: 2px dashed rgba(0, 255, 136, 0.25);
+        border: 2px dashed rgba(123, 47, 252, 0.25);
         border-radius: 16px;
         padding: 2.5rem;
         text-align: center;
-        background: rgba(0, 255, 136, 0.03);
+        background: rgba(123, 47, 252, 0.03);
         transition: all 0.4s ease;
         position: relative;
         z-index: 1;
     }
     
     .upload-area:hover {
-        border-color: #00ff88;
-        background: rgba(0, 255, 136, 0.08);
+        border-color: #7b2ffc;
+        background: rgba(123, 47, 252, 0.08);
         box-shadow: 
-            0 0 40px rgba(0, 255, 136, 0.08),
-            inset 0 0 40px rgba(0, 255, 136, 0.03);
+            0 0 40px rgba(123, 47, 252, 0.08),
+            inset 0 0 40px rgba(123, 47, 252, 0.03);
     }
     
     .upload-area .icon {
@@ -193,7 +232,7 @@ st.markdown("""
         margin-bottom: 1rem;
         display: block;
         animation: float 3s ease-in-out infinite;
-        filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.2));
+        filter: drop-shadow(0 0 30px rgba(123, 47, 252, 0.2));
     }
     
     @keyframes float {
@@ -203,24 +242,25 @@ st.markdown("""
     
     .upload-area .title {
         font-family: 'Orbitron', sans-serif;
-        color: #00ff88;
+        color: #7b9fff;
         font-size: 1.2rem;
         letter-spacing: 2px;
-        text-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        text-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
     }
     
     .upload-area .subtitle {
         font-family: 'Share Tech Mono', monospace;
-        color: #88aabb;
+        color: #6688aa;
         font-size: 0.85rem;
         margin-top: 0.5rem;
         opacity: 0.8;
     }
     
+    /* Button - Galaxy gradient */
     .stButton > button {
         font-family: 'Orbitron', sans-serif !important;
-        background: linear-gradient(135deg, #00ff88, #00ccff) !important;
-        color: #0a0e1a !important;
+        background: linear-gradient(135deg, #7b2ffc, #00d4ff) !important;
+        color: #0a0a1a !important;
         border: none !important;
         border-radius: 12px !important;
         padding: 0.9rem 2.5rem !important;
@@ -229,8 +269,8 @@ st.markdown("""
         text-transform: uppercase !important;
         transition: all 0.3s ease !important;
         box-shadow: 
-            0 0 30px rgba(0, 255, 136, 0.2),
-            0 0 60px rgba(0, 204, 255, 0.1) !important;
+            0 0 30px rgba(123, 47, 252, 0.2),
+            0 0 60px rgba(0, 212, 255, 0.1) !important;
         width: 100% !important;
         position: relative;
         z-index: 1;
@@ -239,20 +279,22 @@ st.markdown("""
     .stButton > button:hover {
         transform: scale(1.03) !important;
         box-shadow: 
-            0 0 50px rgba(0, 255, 136, 0.4),
-            0 0 80px rgba(0, 204, 255, 0.2) !important;
+            0 0 50px rgba(123, 47, 252, 0.4),
+            0 0 80px rgba(0, 212, 255, 0.2) !important;
     }
     
+    /* Sidebar - Dark glass */
     .css-1d391kg, .css-12oz5g7 {
-        background: rgba(10, 14, 30, 0.85) !important;
+        background: rgba(10, 10, 26, 0.85) !important;
         backdrop-filter: blur(15px) !important;
-        border-right: 1px solid rgba(0, 255, 136, 0.08) !important;
+        border-right: 1px solid rgba(123, 47, 252, 0.08) !important;
     }
     
     .css-1d391kg .stMarkdown, .css-12oz5g7 .stMarkdown {
-        color: #c8d8e8 !important;
+        color: #aab8d0 !important;
     }
     
+    /* Status dot - Galaxy style */
     .status-dot {
         display: inline-block;
         width: 10px;
@@ -263,8 +305,8 @@ st.markdown("""
     }
     
     .status-dot.online {
-        background: #00ff88;
-        box-shadow: 0 0 20px #00ff88, 0 0 40px rgba(0, 255, 136, 0.3);
+        background: #7b2ffc;
+        box-shadow: 0 0 20px #7b2ffc, 0 0 40px rgba(123, 47, 252, 0.3);
     }
     
     @keyframes blink {
@@ -272,9 +314,10 @@ st.markdown("""
         50% { opacity: 0.3; }
     }
     
+    /* Metrics - Galaxy style */
     .metric-box {
-        background: rgba(0, 255, 136, 0.05);
-        border: 1px solid rgba(0, 255, 136, 0.1);
+        background: rgba(123, 47, 252, 0.05);
+        border: 1px solid rgba(123, 47, 252, 0.1);
         border-radius: 12px;
         padding: 1.2rem;
         text-align: center;
@@ -284,63 +327,66 @@ st.markdown("""
     }
     
     .metric-box:hover {
-        border-color: rgba(0, 255, 136, 0.3);
-        box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+        border-color: rgba(123, 47, 252, 0.3);
+        box-shadow: 0 0 30px rgba(123, 47, 252, 0.05);
     }
     
     .metric-box .number {
         font-size: 1.8rem;
         font-weight: 700;
-        color: #00ff88;
+        color: #7b9fff;
         font-family: 'Orbitron', sans-serif;
-        text-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        text-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
     }
     
     .metric-box .label {
         font-size: 0.65rem;
-        color: #88aabb;
+        color: #6688aa;
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-top: 0.3rem;
     }
     
+    /* Error/Info messages - Galaxy style */
     .stAlert {
-        background: rgba(255, 0, 50, 0.08) !important;
-        border: 1px solid rgba(255, 0, 50, 0.2) !important;
+        background: rgba(255, 0, 100, 0.08) !important;
+        border: 1px solid rgba(255, 0, 100, 0.2) !important;
         border-radius: 12px !important;
         backdrop-filter: blur(10px) !important;
     }
     
     .stAlert .stMarkdown {
-        color: #ff6b8a !important;
+        color: #ff6b9d !important;
         font-family: 'Share Tech Mono', monospace !important;
     }
     
     .stInfo {
-        background: rgba(0, 255, 136, 0.05) !important;
-        border: 1px solid rgba(0, 255, 136, 0.15) !important;
+        background: rgba(123, 47, 252, 0.05) !important;
+        border: 1px solid rgba(123, 47, 252, 0.15) !important;
         border-radius: 12px !important;
         backdrop-filter: blur(10px) !important;
     }
     
     .stInfo .stMarkdown {
-        color: #88ddbb !important;
+        color: #88bbdd !important;
         font-family: 'Share Tech Mono', monospace !important;
     }
     
+    /* Scrollbar - Galaxy style */
     ::-webkit-scrollbar {
         width: 6px;
-        background: #0a0e1a;
+        background: #0a0a1a;
     }
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #00ff88, #00ccff);
+        background: linear-gradient(180deg, #7b2ffc, #00d4ff);
         border-radius: 3px;
-        box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        box-shadow: 0 0 20px rgba(123, 47, 252, 0.2);
     }
     ::-webkit-scrollbar-track {
-        background: rgba(10, 14, 26, 0.5);
+        background: rgba(10, 10, 26, 0.5);
     }
     
+    /* Responsive */
     @media (max-width: 768px) {
         .main-header { font-size: 2rem; }
         .result-card { padding: 1rem; }
@@ -348,9 +394,10 @@ st.markdown("""
         .upload-area { padding: 1.5rem; }
     }
     
+    /* Footer */
     .footer-text {
         text-align: center;
-        color: #334455;
+        color: #334466;
         font-family: 'Share Tech Mono', monospace;
         font-size: 0.7rem;
         letter-spacing: 2px;
@@ -361,6 +408,7 @@ st.markdown("""
     }
 </style>
 
+<!-- Scanline overlay -->
 <div class="scanline"></div>
 """, unsafe_allow_html=True)
 
@@ -388,7 +436,7 @@ def get_api_key():
 def display_header():
     col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
-        st.markdown('<p class="main-header">⧩ IT-INSIGHT</p>', unsafe_allow_html=True)
+        st.markdown('<p class="main-header">🌌 IT-INSIGHT</p>', unsafe_allow_html=True)
         st.markdown(
             '<p class="sub-header">// AI-POWERED HARDWARE ANALYSIS //</p>',
             unsafe_allow_html=True
@@ -400,7 +448,7 @@ def display_header():
             """
             <div style="text-align: center; margin-top: -0.5rem; margin-bottom: 1rem;">
                 <span class="status-dot online"></span>
-                <span style="font-family: 'Share Tech Mono', monospace; color: #00ff88; font-size: 0.8rem; opacity: 0.7;">
+                <span style="font-family: 'Share Tech Mono', monospace; color: #7b9fff; font-size: 0.8rem; opacity: 0.7;">
                     SYSTEM ONLINE // v2.0
                 </span>
             </div>
@@ -411,10 +459,10 @@ def display_header():
 def display_metrics():
     col1, col2, col3, col4 = st.columns(4)
     metrics = [
-        ("⚡", "STATUS", "ACTIVE"),
-        ("📡", "CONNECTION", "SECURE"),
-        ("🧠", "MODEL", "GEMINI 2.0"),
-        ("🔐", "ENCRYPTION", "AES-256")
+        ("🌌", "STATUS", "ACTIVE"),
+        ("💫", "CONNECTION", "SECURE"),
+        ("🛸", "MODEL", "GEMINI 2.0"),
+        ("🔮", "ENCRYPTION", "AES-256")
     ]
     
     for col, (icon, label, value) in zip([col1, col2, col3, col4], metrics):
@@ -423,7 +471,7 @@ def display_metrics():
                 f"""
                 <div class="metric-box">
                     <div style="font-size: 1.5rem;">{icon}</div>
-                    <div class="number" style="font-size: 0.9rem; color: #00ccff;">{value}</div>
+                    <div class="number" style="font-size: 0.9rem; color: #7bb8ff;">{value}</div>
                     <div class="label">{label}</div>
                 </div>
                 """,
@@ -434,7 +482,7 @@ def display_result(result):
     st.markdown("---")
     st.markdown(
         """
-        <div style="text-align: center; font-family: 'Orbitron', sans-serif; color: #00ff88; letter-spacing: 4px; font-size: 1.2rem; margin: 2rem 0;">
+        <div style="text-align: center; font-family: 'Orbitron', sans-serif; color: #7b9fff; letter-spacing: 4px; font-size: 1.2rem; margin: 2rem 0;">
             ═══ ANALYSIS REPORT ═══
         </div>
         """,
@@ -488,8 +536,8 @@ def main():
         st.markdown(
             """
             <div style="text-align: center; margin-bottom: 2rem;">
-                <div style="font-size: 2rem;">🖥️</div>
-                <div style="font-family: 'Orbitron', sans-serif; color: #00ff88; font-size: 0.8rem; letter-spacing: 2px;">
+                <div style="font-size: 2rem;">🪐</div>
+                <div style="font-family: 'Orbitron', sans-serif; color: #7b9fff; font-size: 0.8rem; letter-spacing: 2px;">
                     SYSTEM CONSOLE
                 </div>
             </div>
@@ -539,7 +587,7 @@ def main():
         st.markdown("---")
         st.markdown(
             """
-            <div style="text-align: center; font-size: 0.7rem; color: #445566; font-family: 'Share Tech Mono', monospace;">
+            <div style="text-align: center; font-size: 0.7rem; color: #445577; font-family: 'Share Tech Mono', monospace;">
                 IT-INSIGHT v2.0<br>
                 SECURE CONNECTION
             </div>
@@ -560,7 +608,7 @@ def main():
     st.markdown(
         """
         <div class="upload-area">
-            <span class="icon">📀</span>
+            <span class="icon">🪐</span>
             <div class="title">UPLOAD HARDWARE IMAGE</div>
             <div class="subtitle">Drag & drop or click to select</div>
         </div>
@@ -583,9 +631,9 @@ def main():
         with col2:
             st.markdown(
                 """
-                <div style="font-family: 'Share Tech Mono', monospace; color: #88aabb; font-size: 0.9rem; padding: 1rem 0;">
-                    FILE: <span style="color: #00ff88;">{}</span><br>
-                    SIZE: <span style="color: #00ff88;">{} x {}</span>
+                <div style="font-family: 'Share Tech Mono', monospace; color: #6688aa; font-size: 0.9rem; padding: 1rem 0;">
+                    FILE: <span style="color: #7b9fff;">{}</span><br>
+                    SIZE: <span style="color: #7b9fff;">{} x {}</span>
                 </div>
                 """.format(
                     uploaded_file.name,
@@ -624,7 +672,7 @@ def main():
         st.info("⏳ Awaiting hardware image upload...")
         st.markdown(
             """
-            <div style="text-align: center; color: #445566; font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; padding: 2rem;">
+            <div style="text-align: center; color: #445577; font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; padding: 2rem;">
                 SUPPORTED HARDWARE: CPU • GPU • RAM • STORAGE • NETWORK • PERIPHERALS
             </div>
             """,
@@ -635,7 +683,7 @@ def main():
     st.markdown(
         """
         <div class="footer-text">
-            ⚡ IT-INSIGHT • POWERED BY GOOGLE GEMINI API • SECURE & ENCRYPTED ⚡
+            🌌 IT-INSIGHT • POWERED BY GOOGLE GEMINI API • SECURE & ENCRYPTED 🌌
         </div>
         """,
         unsafe_allow_html=True
