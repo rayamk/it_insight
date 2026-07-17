@@ -351,7 +351,6 @@ def get_api_key():
 
 # ============ DISPLAY FUNCTIONS ============
 def display_metrics():
-    theme = get_theme()
     col1, col2, col3, col4 = st.columns(4)
     metrics = [
         ("STATUS", "Active"),
@@ -424,10 +423,8 @@ def main():
     theme = get_theme()
     inject_css()
     
-    # Header
     display_header()
     
-    # Sidebar
     with st.sidebar:
         st.markdown("### ⚙️ Settings")
         st.markdown("---")
@@ -475,7 +472,6 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-    # Main content
     api_key = get_api_key()
     
     if not api_key:
@@ -486,10 +482,8 @@ def main():
         """)
         st.stop()
     
-    # Metrics
     display_metrics()
     
-    # Upload Area
     st.markdown(
         """
         <div class="upload-card">
@@ -561,3 +555,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
